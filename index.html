@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="stealth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Smart Home Kids Lab — Connect • Automate • Control v1.0</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&family=Reem+Kufi:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   9 THEMES
+   ============================================================ */
+:root{
+--bg:#020617;--panel:#020617;--card:rgba(15,23,42,.96);--card-b:rgba(148,163,184,.3);
+--ac:#22c55e;--ac-s:rgba(34,197,94,.15);--ac-st:rgba(34,197,94,.7);--ac2:#3b82f6;
+--danger:#f97373;--muted:#9ca3af;--text:#f9fafb;--text2:#e5e7eb;--border:#1f2937;
+--pill:rgba(15,23,42,.9);--pill-b:rgba(148,163,184,.6);--input:rgba(15,23,42,.6);
+--glow1:rgba(34,197,94,.18);--glow2:rgba(59,130,246,.2);
+--btn-bg:linear-gradient(135deg,#22c55e,#16a34a);--btn-text:#fff;--btn-b:rgba(34,197,94,.8);
+--shadow:rgba(15,23,42,.85);
+}
+[data-theme="neon"]{
+--bg:#0a0a1a;--panel:#0a0a1a;--card:rgba(18,18,42,.96);--card-b:rgba(100,100,255,.25);
+--ac:#00d4ff;--ac-s:rgba(0,212,255,.15);--ac-st:rgba(0,212,255,.7);--ac2:#ff6600;
+--danger:#ff3333;--muted:#8888bb;--text:#eeeeff;--text2:#ccccee;--border:#1a1a3a;
+--pill:rgba(18,18,42,.9);--pill-b:rgba(100,100,255,.4);--input:rgba(18,18,42,.6);
+--glow1:rgba(0,212,255,.2);--glow2:rgba(255,102,0,.15);
+--btn-bg:linear-gradient(135deg,#00d4ff,#0088ff);--btn-text:#fff;--btn-b:rgba(0,212,255,.8);
+--shadow:rgba(10,10,26,.9);
+}
+[data-theme="arctic"]{
+--bg:#e8eef4;--panel:#f0f4f8;--card:rgba(255,255,255,.95);--card-b:rgba(100,130,170,.35);
+--ac:#2563eb;--ac-s:rgba(37,99,235,.12);--ac-st:rgba(37,99,235,.6);--ac2:#06b6d4;
+--danger:#dc2626;--muted:#64748b;--text:#1e293b;--text2:#475569;--border:#cbd5e1;
+--pill:rgba(255,255,255,.9);--pill-b:rgba(100,130,170,.3);--input:rgba(241,245,249,.9);
+--glow1:rgba(37,99,235,.08);--glow2:rgba(6,182,212,.06);
+--btn-bg:linear-gradient(135deg,#2563eb,#3b82f6);--btn-text:#fff;--btn-b:rgba(37,99,235,.7);
+--shadow:rgba(100,116,139,.15);
+}
+[data-theme="blaze"]{
+--bg:#fdf2e9;--panel:#fef7f0;--card:rgba(255,255,255,.95);--card-b:rgba(194,120,60,.3);
+--ac:#ea580c;--ac-s:rgba(234,88,12,.1);--ac-st:rgba(234,88,12,.6);--ac2:#dc2626;
+--danger:#dc2626;--muted:#78716c;--text:#292524;--text2:#57534e;--border:#e7e5e4;
+--pill:rgba(255,255,255,.9);--pill-b:rgba(194,120,60,.25);--input:rgba(254,243,230,.9);
+--glow1:rgba(234,88,12,.06);--glow2:rgba(220,38,38,.04);
+--btn-bg:linear-gradient(135deg,#ea580c,#f97316);--btn-text:#fff;--btn-b:rgba(234,88,12,.7);
+--shadow:rgba(120,113,108,.12);
+}
+[data-theme="ha"]{
+--bg:#1c1c2e;--panel:#1c1c2e;--card:rgba(28,28,52,.96);--card-b:rgba(3,169,244,.25);
+--ac:#03a9f4;--ac-s:rgba(3,169,244,.15);--ac-st:rgba(3,169,244,.7);--ac2:#29b6f6;
+--danger:#ff5252;--muted:#7986cb;--text:#e8eaf6;--text2:#c5cae9;--border:#283593;
+--pill:rgba(28,28,52,.9);--pill-b:rgba(3,169,244,.35);--input:rgba(28,28,52,.6);
+--glow1:rgba(3,169,244,.18);--glow2:rgba(41,182,246,.12);
+--btn-bg:linear-gradient(135deg,#03a9f4,#0288d1);--btn-text:#fff;--btn-b:rgba(3,169,244,.8);
+--shadow:rgba(13,13,26,.9);
+}
+[data-theme="forest"]{
+--bg:#0a1a0a;--panel:#0a1a0a;--card:rgba(14,30,14,.96);--card-b:rgba(74,222,128,.2);
+--ac:#4ade80;--ac-s:rgba(74,222,128,.12);--ac-st:rgba(74,222,128,.7);--ac2:#86efac;
+--danger:#f87171;--muted:#6b8f6b;--text:#ecfdf5;--text2:#bbf7d0;--border:#1a3a1a;
+--pill:rgba(14,30,14,.9);--pill-b:rgba(74,222,128,.3);--input:rgba(14,30,14,.6);
+--glow1:rgba(74,222,128,.15);--glow2:rgba(134,239,172,.08);
+--btn-bg:linear-gradient(135deg,#4ade80,#22c55e);--btn-text:#fff;--btn-b:rgba(74,222,128,.8);
+--shadow:rgba(5,15,5,.9);
+}
+[data-theme="tactical"]{
+--bg:#1a1a14;--panel:#1a1a14;--card:rgba(30,30,22,.96);--card-b:rgba(212,160,23,.2);
+--ac:#d4a017;--ac-s:rgba(212,160,23,.12);--ac-st:rgba(212,160,23,.7);--ac2:#fbbf24;
+--danger:#ef4444;--muted:#8a8a6a;--text:#fafaf0;--text2:#e5e5d0;--border:#3a3a28;
+--pill:rgba(30,30,22,.9);--pill-b:rgba(212,160,23,.3);--input:rgba(30,30,22,.6);
+--glow1:rgba(212,160,23,.12);--glow2:rgba(251,191,36,.08);
+--btn-bg:linear-gradient(135deg,#d4a017,#b8860b);--btn-text:#fff;--btn-b:rgba(212,160,23,.8);
+--shadow:rgba(13,13,10,.9);
+}
+[data-theme="deepsea"]{
+--bg:#0a1628;--panel:#0a1628;--card:rgba(14,26,46,.96);--card-b:rgba(6,182,212,.2);
+--ac:#06b6d4;--ac-s:rgba(6,182,212,.12);--ac-st:rgba(6,182,212,.7);--ac2:#22d3ee;
+--danger:#fb7185;--muted:#6b8ca0;--text:#ecfeff;--text2:#a5f3fc;--border:#164e63;
+--pill:rgba(14,26,46,.9);--pill-b:rgba(6,182,212,.3);--input:rgba(14,26,46,.6);
+--glow1:rgba(6,182,212,.15);--glow2:rgba(34,211,238,.08);
+--btn-bg:linear-gradient(135deg,#06b6d4,#0891b2);--btn-text:#fff;--btn-b:rgba(6,182,212,.8);
+--shadow:rgba(5,11,20,.9);
+}
+[data-theme="medina"]{
+--bg:#120e07;--panel:#16110a;--card:rgba(36,28,16,.96);--card-b:rgba(200,168,78,.18);
+--ac:#c8a84e;--ac-s:rgba(200,168,78,.1);--ac-st:rgba(200,168,78,.7);--ac2:#2d8a4e;
+--danger:#e07040;--muted:#a89878;--text:#f5f0e8;--text2:#ddd5c0;--border:#3d3020;
+--pill:rgba(36,28,16,.9);--pill-b:rgba(200,168,78,.25);--input:rgba(36,28,16,.6);
+--glow1:rgba(200,168,78,.08);--glow2:rgba(45,138,78,.04);
+--btn-bg:linear-gradient(135deg,#c8a84e,#a08030);--btn-text:#120e07;--btn-b:rgba(200,168,78,.8);
+--shadow:rgba(10,8,4,.9);
+--gold1:#c8a84e;--gold2:#e8c86e;--gold3:#a08030;--gold4:#806020;
+}
+[data-theme="andalus"]{
+--bg:#0a0e1e;--panel:#0c1024;--card:rgba(14,18,40,.96);--card-b:rgba(180,155,90,.18);
+--ac:#c4a24e;--ac-s:rgba(196,162,78,.1);--ac-st:rgba(196,162,78,.7);--ac2:#4a7aba;
+--danger:#e06050;--muted:#8090aa;--text:#eeeef5;--text2:#c8c8e0;--border:#1e2848;
+--pill:rgba(14,18,40,.9);--pill-b:rgba(180,155,90,.25);--input:rgba(14,18,40,.6);
+--glow1:rgba(196,162,78,.06);--glow2:rgba(74,122,186,.05);
+--btn-bg:linear-gradient(135deg,#c4a24e,#9a7a30);--btn-text:#0a0e1e;--btn-b:rgba(196,162,78,.8);
+--shadow:rgba(5,7,15,.9);
+--gold1:#c4a24e;--gold2:#dcc070;--gold3:#9a7a30;--gold4:#705820;
+}
+[data-theme="ottoman"]{
+--bg:#081614;--panel:#0a1c18;--card:rgba(12,32,28,.96);--card-b:rgba(62,210,190,.15);
+--ac:#3ed2be;--ac-s:rgba(62,210,190,.1);--ac-st:rgba(62,210,190,.7);--ac2:#a8d4a0;
+--danger:#e07050;--muted:#6a9a8a;--text:#eaf5f2;--text2:#b8ddd5;--border:#1a3a32;
+--pill:rgba(12,32,28,.9);--pill-b:rgba(62,210,190,.2);--input:rgba(12,32,28,.6);
+--glow1:rgba(62,210,190,.06);--glow2:rgba(168,212,160,.04);
+--btn-bg:linear-gradient(135deg,#3ed2be,#2aaa98);--btn-text:#081614;--btn-b:rgba(62,210,190,.8);
+--shadow:rgba(4,10,9,.9);
+--iznik1:#3ed2be;--iznik2:#60e8d8;--iznik3:#2aaa98;--iznik4:#1a8070;
+}
+[data-theme="sahara"]{
+--bg:#10081a;--panel:#140c1e;--card:rgba(24,14,36,.96);--card-b:rgba(212,160,96,.18);
+--ac:#d4a060;--ac-s:rgba(212,160,96,.1);--ac-st:rgba(212,160,96,.7);--ac2:#8a6ad0;
+--danger:#e06050;--muted:#9a80a8;--text:#f5f0f8;--text2:#d8c8e0;--border:#2e1e3e;
+--pill:rgba(24,14,36,.9);--pill-b:rgba(212,160,96,.2);--input:rgba(24,14,36,.6);
+--glow1:rgba(212,160,96,.06);--glow2:rgba(138,106,208,.04);
+--btn-bg:linear-gradient(135deg,#d4a060,#b08040);--btn-text:#10081a;--btn-b:rgba(212,160,96,.8);
+--shadow:rgba(8,4,13,.9);
+--sand1:#d4a060;--sand2:#e8c080;--sand3:#b08040;--sand4:#886030;
+}
+[data-theme="isfahan"]{
+--bg:#08081e;--panel:#0a0a24;--card:rgba(12,12,38,.96);--card-b:rgba(80,160,210,.18);
+--ac:#50a0d2;--ac-s:rgba(80,160,210,.1);--ac-st:rgba(80,160,210,.7);--ac2:#40c8b8;
+--danger:#e06050;--muted:#6888aa;--text:#e8eef8;--text2:#b0c8e0;--border:#182848;
+--pill:rgba(12,12,38,.9);--pill-b:rgba(80,160,210,.2);--input:rgba(12,12,38,.6);
+--glow1:rgba(80,160,210,.06);--glow2:rgba(64,200,184,.04);
+--btn-bg:linear-gradient(135deg,#50a0d2,#3080b0);--btn-text:#08081e;--btn-b:rgba(80,160,210,.8);
+--shadow:rgba(4,4,15,.9);
+--lapis1:#50a0d2;--lapis2:#70c0e8;--lapis3:#3080b0;--lapis4:#205880;
+}
+[data-theme="damascus"]{
+--bg:#f5f0e5;--panel:#efe8d8;--card:rgba(255,252,245,.96);--card-b:rgba(45,120,60,.2);
+--ac:#2d783c;--ac-s:rgba(45,120,60,.08);--ac-st:rgba(45,120,60,.6);--ac2:#c8a040;
+--danger:#c04030;--muted:#7a8a6a;--text:#1a2a14;--text2:#3a4a30;--border:#d0d8c0;
+--pill:rgba(255,252,245,.9);--pill-b:rgba(45,120,60,.2);--input:rgba(245,240,225,.9);
+--glow1:rgba(45,120,60,.04);--glow2:rgba(200,160,64,.03);
+--btn-bg:linear-gradient(135deg,#2d783c,#1a5828);--btn-text:#f5f0e5;--btn-b:rgba(45,120,60,.7);
+--shadow:rgba(45,60,30,.08);
+--vine1:#2d783c;--vine2:#3a9850;--vine3:#1a5828;--vine4:#0e3818;
+}
+[data-theme="fez"]{
+--bg:#f0ece4;--panel:#e8e2d8;--card:rgba(252,250,245,.96);--card-b:rgba(30,60,150,.18);
+--ac:#1e3c96;--ac-s:rgba(30,60,150,.08);--ac-st:rgba(30,60,150,.6);--ac2:#b87030;
+--danger:#c04030;--muted:#6878a0;--text:#141830;--text2:#2a3050;--border:#c8c8d8;
+--pill:rgba(252,250,245,.9);--pill-b:rgba(30,60,150,.18);--input:rgba(240,236,228,.9);
+--glow1:rgba(30,60,150,.04);--glow2:rgba(184,112,48,.03);
+--btn-bg:linear-gradient(135deg,#1e3c96,#142870);--btn-text:#f0ece4;--btn-b:rgba(30,60,150,.7);
+--shadow:rgba(20,24,48,.08);
+--cobalt1:#1e3c96;--cobalt2:#3050b8;--cobalt3:#142870;--cobalt4:#0e1a50;
+}
+[data-theme="samarkand"]{
+--bg:#060820;--panel:#080a28;--card:rgba(10,12,36,.96);--card-b:rgba(200,170,60,.18);
+--ac:#c8aa3c;--ac-s:rgba(200,170,60,.1);--ac-st:rgba(200,170,60,.7);--ac2:#3050c0;
+--danger:#e06050;--muted:#8090b0;--text:#f0eee5;--text2:#c8c0a8;--border:#1e2048;
+--pill:rgba(10,12,36,.9);--pill-b:rgba(200,170,60,.2);--input:rgba(10,12,36,.6);
+--glow1:rgba(200,170,60,.06);--glow2:rgba(48,80,192,.05);
+--btn-bg:linear-gradient(135deg,#c8aa3c,#a08820);--btn-text:#060820;--btn-b:rgba(200,170,60,.8);
+--shadow:rgba(3,4,16,.9);
+--timur1:#c8aa3c;--timur2:#e8cc60;--timur3:#a08820;--timur4:#706010;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);overflow:hidden;
+background-image:radial-gradient(circle at 20% 50%,var(--glow1),transparent 50%),radial-gradient(circle at 80% 20%,var(--glow2),transparent 50%)}
+.app{display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+a{color:var(--ac)}
+
+/* Header */
+.header{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-bottom:1px solid var(--card-b);background:var(--panel);flex-shrink:0;gap:6px;flex-wrap:wrap;position:relative}
+.title-block{display:flex;align-items:center;gap:8px}
+.title-block h1{font-size:1rem;letter-spacing:.1em;font-weight:900;color:var(--text)}
+.ver{font-size:50%;opacity:.5;margin-left:4px}
+.site-logo{width:auto;height:18px;color:var(--ac);flex-shrink:0}
+.subtitle{font-size:.68rem;color:var(--muted);letter-spacing:.05em}
+.bismillah{position:absolute;left:50%;transform:translateX(-50%);font-family:'Amiri',serif;font-size:.7rem;color:var(--muted);opacity:.45;user-select:none;pointer-events:none;white-space:nowrap}
+[data-theme="medina"] .bismillah,[data-theme="andalus"] .bismillah,[data-theme="ottoman"] .bismillah,[data-theme="sahara"] .bismillah{opacity:.8;font-size:.85rem;text-shadow:0 0 20px currentColor}
+[data-theme="medina"] .bismillah{color:var(--gold2)}
+[data-theme="andalus"] .bismillah{color:var(--gold2)}
+[data-theme="ottoman"] .bismillah{color:var(--iznik2)}
+[data-theme="sahara"] .bismillah{color:var(--sand2)}
+
+
+.menu-toggle{display:none;background:none;border:none;font-size:1.2rem;color:var(--text);cursor:pointer;padding:4px}
+.header-right{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.lang-group,.level-group{display:flex;gap:2px}
+.lang-btn,.level-btn{width:26px;height:26px;border-radius:7px;border:1.5px solid transparent;background:var(--pill);cursor:pointer;font-size:.65rem;color:var(--muted);display:flex;align-items:center;justify-content:center;transition:all .15s;position:relative}
+.lang-btn.active,.level-btn.active{border-color:var(--ac);color:var(--ac);background:var(--ac-s)}
+
+/* Layout */
+.layout{display:flex;flex:1;overflow:hidden}
+.sidebar{width:210px;flex-shrink:0;overflow-y:auto;border-right:1px solid var(--card-b);padding:8px 0;background:var(--panel)}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--card-b);border-radius:4px}
+.s-cat{font-size:.55rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:10px 14px 3px;opacity:.7}
+.s-div{height:1px;background:var(--card-b);margin:4px 10px}
+.s-item{display:flex;align-items:center;gap:7px;padding:6px 14px;cursor:pointer;font-size:.75rem;font-weight:500;border-left:3px solid transparent;transition:all .1s;color:var(--text2)}
+.s-item:hover{background:var(--ac-s)}
+.s-item.active{border-left-color:var(--ac);background:var(--ac-s);color:var(--text);font-weight:700}
+.s-icon{font-size:.9rem;width:20px;text-align:center}
+.s-label{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.main{flex:1;overflow-y:auto;padding:18px;max-width:880px}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--card-b);border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:0 1px 4px var(--shadow)}
+.card-title{font-size:.85rem;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.card-sub{font-size:.8rem;line-height:1.6;color:var(--text2)}
+.page-title{font-size:1.25rem;font-weight:900;margin-bottom:2px;letter-spacing:.04em}
+.page-tag{font-size:.78rem;color:var(--muted);margin-bottom:12px;font-style:italic}
+
+/* Buttons */
+.btn{padding:7px 14px;border-radius:9px;border:1.5px solid var(--pill-b);background:var(--pill);color:var(--text);font-size:.75rem;font-weight:600;cursor:pointer;transition:all .15s;font-family:inherit}
+.btn:hover{border-color:var(--ac);transform:translateY(-1px)}
+.btn.sm{padding:4px 9px;font-size:.68rem;border-radius:7px}
+.btn.primary{background:var(--btn-bg);color:var(--btn-text);border-color:var(--btn-b)}
+
+/* Hints */
+.hint{padding:9px 12px;border-radius:9px;margin:8px 0;font-size:.76rem;line-height:1.6;border-left:3px solid;background:var(--card)}
+.hint.tip{border-left-color:#22c55e}
+.hint.warn{border-left-color:#f0a040}
+.hint.danger{border-left-color:#f06060}
+
+/* Code blocks */
+.code{position:relative;margin:6px 0;border-radius:9px;overflow:hidden;background:rgba(0,0,0,.3);border:1px solid var(--card-b)}
+.code pre{padding:10px 12px;font-size:.72rem;line-height:1.5;overflow-x:auto;font-family:'Fira Code',Consolas,monospace;color:var(--text2)}
+.copy-btn{position:absolute;top:5px;right:5px;padding:3px 8px;border-radius:5px;border:1px solid var(--pill-b);background:var(--pill);color:var(--muted);font-size:.6rem;cursor:pointer;font-family:inherit}
+.copy-btn:hover{color:var(--ac);border-color:var(--ac)}
+[data-theme="arctic"] .code,[data-theme="blaze"] .code{background:rgba(15,23,42,.06)}
+
+/* Accordion */
+.acc{border-radius:9px;border:1px solid var(--card-b);margin-bottom:5px;overflow:hidden;background:var(--card)}
+.acc-h{padding:9px 12px;cursor:pointer;display:flex;align-items:center;gap:7px;font-size:.78rem;font-weight:600}
+.acc-h:hover{background:var(--ac-s)}
+.acc-arr{transition:transform .2s;font-size:.65rem;color:var(--muted)}
+.acc.open .acc-arr{transform:rotate(90deg)}
+.acc-b{display:none;padding:0 12px 10px;font-size:.78rem;line-height:1.6;color:var(--text2)}
+.acc.open .acc-b{display:block}
+
+/* Steps */
+.steps{counter-reset:step}
+.step{position:relative;padding-left:34px;margin-bottom:12px;font-size:.8rem;line-height:1.6;color:var(--text2)}
+.step::before{counter-increment:step;content:counter(step);position:absolute;left:0;top:0;width:22px;height:22px;border-radius:50%;background:var(--ac-s);color:var(--ac);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;border:1.5px solid var(--ac)}
+
+/* Progress */
+.prog-bar{height:7px;border-radius:99px;background:var(--card-b);margin:6px 0;overflow:hidden}
+.prog-fill{height:100%;border-radius:99px;background:var(--btn-bg);transition:width .5s ease}
+
+/* Level badges */
+.lvl{display:inline-block;padding:2px 7px;border-radius:4px;font-size:.55rem;font-weight:800;letter-spacing:.04em;vertical-align:middle}
+.lvl.g{background:rgba(34,197,94,.15);color:#22c55e;border:1px solid rgba(34,197,94,.3)}
+.lvl.y{background:rgba(234,179,8,.15);color:#eab308;border:1px solid rgba(234,179,8,.3)}
+.lvl.r{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3)}
+
+/* Quests & Badges */
+.quest-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px;margin:8px 0}
+.q-card{border-radius:11px;border:1.5px solid var(--card-b);background:var(--card);padding:12px;display:flex;gap:10px;align-items:center;transition:all .15s;cursor:pointer}
+.q-card.done{border-color:var(--ac);background:var(--ac-s)}
+.q-icon{font-size:1.5rem;flex-shrink:0;width:36px;text-align:center}
+.q-info{flex:1}
+.q-name{font-size:.78rem;font-weight:700}
+.q-desc{font-size:.66rem;color:var(--muted);margin-top:1px}
+.q-check{width:18px;height:18px;border-radius:50%;border:2px solid var(--card-b);display:flex;align-items:center;justify-content:center;font-size:.65rem}
+.q-card.done .q-check{background:var(--ac);border-color:var(--ac);color:#fff}
+.badge-grid{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.badge{width:64px;text-align:center;opacity:.3;transition:all .3s}
+.badge.earned{opacity:1}
+.badge-ico{font-size:1.8rem}
+.badge-nm{font-size:.55rem;color:var(--muted);margin-top:1px;font-weight:700}
+
+/* Entity tree */
+.ent-tree{margin:6px 0}
+.ent-group{margin-bottom:4px}
+.ent-gh{padding:6px 10px;cursor:pointer;font-size:.75rem;font-weight:700;display:flex;align-items:center;gap:6px;border-radius:8px;transition:background .1s}
+.ent-gh:hover{background:var(--ac-s)}
+.ent-gh .arr{font-size:.6rem;color:var(--muted);transition:transform .2s}
+.ent-group.open .ent-gh .arr{transform:rotate(90deg)}
+.ent-list{display:none;padding-left:24px}
+.ent-group.open .ent-list{display:block}
+.ent-row{display:flex;align-items:center;gap:8px;padding:5px 10px;font-size:.72rem;border-radius:7px;cursor:pointer;transition:background .1s}
+.ent-row:hover{background:var(--ac-s)}
+.ent-id{font-family:'Fira Code',Consolas,monospace;color:var(--ac);flex:1}
+.ent-val{color:var(--text2);font-family:'Fira Code',Consolas,monospace;font-size:.68rem}
+
+/* Dashboard sim cards */
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:8px 0}
+.dash-card{border-radius:12px;border:1.5px solid var(--card-b);background:var(--card);padding:14px;transition:all .15s;cursor:pointer}
+.dash-card:hover{border-color:var(--ac);transform:translateY(-1px)}
+.dash-card .dc-icon{font-size:1.6rem;margin-bottom:6px}
+.dash-card .dc-name{font-size:.8rem;font-weight:700}
+.dash-card .dc-state{font-size:.72rem;color:var(--muted);margin-top:2px}
+
+/* Gauge */
+.gauge-wrap{width:100px;height:60px;position:relative;margin:6px auto}
+.gauge-bg{fill:none;stroke:var(--card-b);stroke-width:8}
+.gauge-fill{fill:none;stroke:var(--ac);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset .8s ease}
+.gauge-val{font-size:.9rem;font-weight:800;fill:var(--text);text-anchor:middle}
+.gauge-unit{font-size:.5rem;fill:var(--muted);text-anchor:middle}
+
+/* Automation builder */
+.auto-flow{display:flex;gap:8px;align-items:stretch;margin:8px 0;flex-wrap:wrap}
+.auto-col{flex:1;min-width:180px;border-radius:11px;border:1.5px solid var(--card-b);background:var(--card);padding:12px}
+.auto-col-title{font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:4px}
+.auto-arrow{font-size:1.2rem;color:var(--muted);display:flex;align-items:center;flex-shrink:0}
+.auto-option{padding:6px 10px;border-radius:7px;border:1px solid var(--card-b);margin-bottom:4px;font-size:.72rem;cursor:pointer;transition:all .12s}
+.auto-option:hover{border-color:var(--ac);background:var(--ac-s)}
+.auto-option.selected{border-color:var(--ac);background:var(--ac-s);color:var(--ac);font-weight:700}
+.auto-config{margin-top:6px;padding:8px;border-radius:7px;background:var(--input);font-size:.7rem}
+.auto-config select,.auto-config input{width:100%;padding:5px 8px;border-radius:5px;border:1px solid var(--pill-b);background:var(--input);color:var(--text);font-size:.7rem;margin-top:3px;font-family:inherit}
+
+/* YAML editor */
+.yaml-split{display:flex;gap:8px;margin:8px 0;min-height:200px}
+.yaml-edit{flex:1;min-width:0}
+.yaml-edit textarea{width:100%;height:200px;padding:10px;border-radius:9px;border:1.5px solid var(--card-b);background:var(--input);color:var(--text);font-family:'Fira Code',Consolas,monospace;font-size:.72rem;line-height:1.5;resize:vertical}
+.yaml-edit textarea:focus{outline:none;border-color:var(--ac)}
+.yaml-edit textarea.valid{border-color:#22c55e}
+.yaml-edit textarea.invalid{border-color:#ef4444}
+.yaml-preview{flex:1;min-width:0;border-radius:9px;border:1px solid var(--card-b);background:var(--card);padding:10px;font-size:.72rem;overflow:auto}
+.yaml-err{color:#ef4444;font-size:.68rem;margin-top:4px;font-family:'Fira Code',Consolas,monospace}
+.yaml-ok{color:#22c55e;font-size:.68rem;margin-top:4px}
+
+/* MQTT playground */
+.mqtt-split{display:flex;gap:8px;margin:8px 0}
+.mqtt-panel{flex:1;border-radius:11px;border:1.5px solid var(--card-b);background:var(--card);padding:12px}
+.mqtt-title{font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.mqtt-input{width:100%;padding:6px 10px;border-radius:7px;border:1px solid var(--pill-b);background:var(--input);color:var(--text);font-size:.72rem;margin-bottom:4px;font-family:inherit}
+.mqtt-log{max-height:150px;overflow-y:auto;font-family:'Fira Code',Consolas,monospace;font-size:.65rem;line-height:1.5;color:var(--text2)}
+.mqtt-msg{padding:3px 6px;border-radius:4px;margin-bottom:2px;background:var(--ac-s)}
+
+/* Network map */
+.net-map{position:relative;background:var(--card);border:1px solid var(--card-b);border-radius:14px;padding:20px;min-height:250px;margin:8px 0;overflow:hidden}
+.net-node{position:absolute;text-align:center;cursor:pointer;transition:transform .15s}
+.net-node:hover{transform:scale(1.1)}
+.net-node-ico{font-size:1.5rem}
+.net-node-name{font-size:.6rem;font-weight:700;color:var(--text);margin-top:2px}
+.net-node-ip{font-size:.55rem;color:var(--muted);font-family:'Fira Code',Consolas,monospace}
+.net-line{position:absolute;height:2px;background:var(--card-b);transform-origin:left center}
+
+/* Tabs */
+.tabs{display:flex;gap:3px;margin:8px 0;flex-wrap:wrap}
+.tab{padding:6px 14px;border-radius:8px 8px 0 0;border:1px solid var(--card-b);border-bottom:none;background:var(--pill);color:var(--muted);font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit}
+.tab.active{background:var(--card);color:var(--ac);border-color:var(--ac)}
+.tab-body{border:1px solid var(--card-b);border-radius:0 0 10px 10px;background:var(--card);padding:12px;margin-top:-1px}
+
+/* Grids */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+
+/* Mobile */
+.m-bar{display:none;overflow-x:auto;padding:5px 8px;gap:5px;border-top:1px solid var(--card-b);background:var(--panel);flex-shrink:0}
+.m-pill{white-space:nowrap;padding:5px 10px;border-radius:99px;border:1px solid var(--pill-b);background:var(--pill);color:var(--muted);font-size:.66rem;font-weight:600;cursor:pointer;font-family:inherit}
+.m-pill.active{background:var(--ac-s);border-color:var(--ac);color:var(--ac)}
+
+/* RTL */
+[dir="rtl"] .s-item{border-left:none;border-right:3px solid transparent}
+[dir="rtl"] .s-item.active{border-right-color:var(--ac)}
+[dir="rtl"] .sidebar{border-right:none;border-left:1px solid var(--card-b)}
+[dir="rtl"] .hint{border-left:none;border-right:3px solid}
+[dir="rtl"] .step{padding-left:0;padding-right:34px}
+[dir="rtl"] .step::before{left:auto;right:0}
+[dir="rtl"] .ent-list{padding-left:0;padding-right:24px}
+
+/* Responsive */
+@media(max-width:768px){
+.sidebar{display:none;position:fixed;top:0;left:0;bottom:0;z-index:800;width:250px;box-shadow:4px 0 20px rgba(0,0,0,.5)}
+.sidebar.open{display:block}
+.menu-toggle{display:block}
+.m-bar{display:flex}
+.main{padding:12px;max-width:100%}
+.auto-flow{flex-direction:column}
+.yaml-split{flex-direction:column}
+.mqtt-split{flex-direction:column}
+.grid-2,.grid-3{grid-template-columns:1fr}
+.dash-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+.dash-grid{grid-template-columns:1fr}
+}
+
+/* Scrollbar global */
+.main::-webkit-scrollbar{width:5px}
+.main::-webkit-scrollbar-thumb{background:var(--card-b);border-radius:4px}
+
+/* ============================================================
+   THEME INDICATOR BUTTON
+   ============================================================ */
+.theme-indicator{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:8px;
+border:1.5px solid var(--pill-b);background:var(--pill);cursor:pointer;font-family:inherit;transition:all .15s}
+.theme-indicator:hover{border-color:var(--ac)}
+.th-swatch{width:12px;height:12px;border-radius:50%;background:var(--ac);border:1.5px solid rgba(255,255,255,.2);flex-shrink:0}
+.th-name{font-size:.68rem;font-weight:700;color:var(--text)}
+.th-arrow{font-size:.55rem;color:var(--muted)}
+
+/* ============================================================
+   THEME CHOOSER MODAL
+   ============================================================ */
+.tc-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:900;
+align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.tc-overlay.open{display:flex}
+.tc-modal{width:min(520px,90vw);max-height:85vh;overflow-y:auto;border-radius:16px;
+background:var(--panel);border:1.5px solid var(--card-b);box-shadow:0 20px 60px var(--shadow);padding:0}
+.tc-tabs{display:flex;border-bottom:1px solid var(--card-b)}
+.tc-tab{flex:1;padding:12px;text-align:center;font-size:.78rem;font-weight:700;cursor:pointer;
+border:none;background:none;color:var(--muted);font-family:inherit;transition:all .15s;
+border-bottom:2px solid transparent}
+.tc-tab.active{color:var(--ac);border-bottom-color:var(--ac)}
+.tc-tab:hover{background:var(--ac-s)}
+.tc-panel{padding:14px}
+.tc-bismillah{text-align:center;font-family:'Amiri',serif;font-size:1.1rem;color:var(--ac);opacity:.6;
+padding:6px 0 10px;user-select:none}
+.tc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.tc-card{border-radius:10px;border:2px solid var(--card-b);padding:10px;cursor:pointer;
+transition:all .18s;text-align:center;position:relative;overflow:hidden}
+.tc-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--shadow)}
+.tc-card.active{border-color:var(--ac);box-shadow:0 0 15px var(--ac-s)}
+.tc-card.active::after{content:'✓';position:absolute;top:5px;right:7px;font-size:.6rem;
+font-weight:900;color:var(--ac)}
+.tc-swatch{height:32px;border-radius:6px;margin-bottom:6px;position:relative;overflow:hidden}
+.tc-swatch-inner{position:absolute;inset:0;display:flex}
+.tc-sw-bg{flex:3}
+.tc-sw-ac{flex:1}
+.tc-sw-ac2{flex:1}
+.tc-emoji{font-size:1rem;margin-bottom:2px}
+.tc-tname{font-size:.72rem;font-weight:700;color:var(--text)}
+.tc-tdesc{font-size:.58rem;color:var(--muted);margin-top:1px}
+
+/* Islamic tab special styling */
+.tc-islamic .tc-card{border-radius:4px 4px 12px 12px}
+.tc-islamic .tc-swatch{border-radius:4px 4px 8px 8px}
+
+/* ============================================================
+   ISLAMIC STRUCTURAL REVOLUTION
+   Shared rules for ALL Islamic themes
+   ============================================================ */
+.islamic-active .card{
+border-radius:4px 4px 14px 14px!important;position:relative;overflow:visible;
+padding:18px!important;border-width:1.5px!important}
+.islamic-active .card::before{
+content:'';position:absolute;top:-1px;left:8%;right:8%;height:3px;
+background:linear-gradient(90deg,transparent,var(--ac),var(--ac-st),var(--ac),transparent);
+border-radius:0 0 4px 4px;pointer-events:none}
+.islamic-active .card::after{
+content:'';position:absolute;bottom:6px;left:15%;right:15%;height:1px;
+background:linear-gradient(90deg,transparent,var(--card-b),transparent);pointer-events:none}
+
+/* Arched dashboard cards */
+.islamic-active .dash-card{
+border-radius:4px 4px 16px 16px!important;padding:16px!important;
+border-width:1.5px!important;position:relative}
+.islamic-active .dash-card::before{
+content:'';position:absolute;top:0;left:12%;right:12%;height:2px;
+background:linear-gradient(90deg,transparent,var(--ac),transparent);pointer-events:none}
+.islamic-active .dash-card:hover{box-shadow:0 6px 25px var(--shadow),0 0 20px var(--ac-s)}
+
+/* Islamic header — ornamental band */
+.islamic-active .header{position:relative;padding-bottom:12px}
+.islamic-active .header::after{
+position:absolute;bottom:-1px;left:0;right:0;height:12px;
+display:flex;align-items:center;justify-content:center;
+font-size:.4rem;letter-spacing:4px;pointer-events:none;z-index:1;
+background:linear-gradient(180deg,transparent,var(--panel))}
+
+/* Bismillah medallion */
+.islamic-active .bismillah{
+font-size:.95rem!important;opacity:.85!important;
+background:radial-gradient(circle,var(--ac-s),transparent 70%);
+padding:2px 18px;border-radius:50%;
+text-shadow:0 0 20px var(--ac-s)}
+
+/* Sidebar — ornamental */
+.islamic-active .s-cat{font-family:'Reem Kufi','Amiri',serif!important;letter-spacing:.18em!important}
+.islamic-active .s-div{background:linear-gradient(90deg,transparent,var(--ac-s),transparent)!important;margin:8px 14px!important;position:relative}
+.islamic-active .s-item{font-family:'Amiri',serif!important;font-size:.8rem!important}
+.islamic-active .s-item.active{
+background:linear-gradient(90deg,var(--ac-s),transparent)!important}
+
+/* Page titles — calligraphic + ornamental underline */
+.islamic-active .page-title{
+font-family:'Reem Kufi','Amiri',serif!important;font-size:1.35rem!important;
+letter-spacing:.05em;padding-bottom:10px!important;margin-bottom:8px!important;
+border-bottom:1px solid transparent!important;position:relative}
+.islamic-active .page-title::after{
+content:'✦';display:block;text-align:center;font-size:.45rem;
+color:var(--ac);opacity:.5;margin-top:6px}
+.islamic-active .page-tag{font-family:'Amiri',serif!important;font-style:italic}
+
+/* Card titles */
+.islamic-active .card-title{font-family:'Reem Kufi','Amiri',serif!important;font-size:.9rem!important}
+.islamic-active .dc-name{font-family:'Reem Kufi','Amiri',serif!important}
+.islamic-active .q-name{font-family:'Reem Kufi','Amiri',serif!important}
+.islamic-active th{font-family:'Reem Kufi','Amiri',serif!important}
+.islamic-active .auto-col-title{font-family:'Reem Kufi','Amiri',serif!important}
+.islamic-active .mqtt-title{font-family:'Reem Kufi','Amiri',serif!important}
+.islamic-active .net-node-name{font-family:'Reem Kufi','Amiri',serif!important}
+
+/* Other text */
+.islamic-active .acc-h{font-family:'Amiri',serif!important}
+.islamic-active .btn{font-family:'Amiri',serif!important;border-radius:6px!important}
+.islamic-active .tab{font-family:'Amiri',serif!important;border-radius:4px 4px 0 0!important}
+.islamic-active .ent-gh{font-family:'Amiri',serif!important}
+
+/* Islamic code blocks */
+.islamic-active .code{border-radius:4px 4px 10px 10px!important}
+.islamic-active .acc{border-radius:4px 4px 10px 10px!important}
+.islamic-active .auto-col{border-radius:4px 4px 12px 12px!important}
+.islamic-active .mqtt-panel{border-radius:4px 4px 12px 12px!important}
+.islamic-active .q-card{border-radius:4px 4px 12px 12px!important}
+.islamic-active .hint{border-radius:4px 12px 12px 4px!important}
+
+/* Islamic quest done */
+.islamic-active .q-card.done{border-color:var(--ac)!important;background:var(--ac-s)!important}
+.islamic-active .badge.earned{filter:drop-shadow(0 0 8px var(--ac-s))}
+.islamic-active .prog-fill{background:linear-gradient(90deg,var(--border),var(--ac),var(--ac-st),var(--ac),var(--border))!important}
+
+/* Breathing room */
+.islamic-active .card+.card{margin-top:12px}
+.islamic-active .dash-grid{gap:12px!important}
+
+/* ============================================================
+   🕌 MEDINA — 8-pointed star + cross tessellation
+   ============================================================ */
+[data-theme="medina"] body{
+background-image:
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cpath d='M60 5L70.5 25.5L93 18L82 40.5L105 40.5L87 55L100 75L78 68L75 92L60 73L45 92L42 68L20 75L33 55L15 40.5L38 40.5L27 18L49.5 25.5Z' fill='none' stroke='rgba(200,168,78,0.045)' stroke-width='0.6'/%3E%3Ccircle cx='60' cy='60' r='30' fill='none' stroke='rgba(200,168,78,0.03)' stroke-width='0.3'/%3E%3Ccircle cx='60' cy='60' r='50' fill='none' stroke='rgba(200,168,78,0.02)' stroke-width='0.3'/%3E%3Cpath d='M60 10L60 110M10 60L110 60' stroke='rgba(200,168,78,0.015)' stroke-width='0.3'/%3E%3C/svg%3E"),
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cpath d='M100 0Q150 50 100 100Q50 50 100 0Z' fill='none' stroke='rgba(200,168,78,0.025)' stroke-width='0.5'/%3E%3Cpath d='M0 100Q50 50 100 100Q50 150 0 100Z' fill='none' stroke='rgba(200,168,78,0.025)' stroke-width='0.5'/%3E%3Cpath d='M100 100Q150 150 100 200Q50 150 100 100Z' fill='none' stroke='rgba(200,168,78,0.025)' stroke-width='0.5'/%3E%3Cpath d='M100 100Q150 50 200 100Q150 150 100 100Z' fill='none' stroke='rgba(200,168,78,0.025)' stroke-width='0.5'/%3E%3C/svg%3E"),
+  radial-gradient(ellipse at 25% 15%,rgba(200,168,78,.08),transparent 45%),
+  radial-gradient(ellipse at 75% 85%,rgba(45,138,78,.04),transparent 40%);
+background-color:#120e07}
+[data-theme="medina"] .header::after{content:'✦ ══════ ❖ ══════ ✦'}
+[data-theme="medina"] .page-title{color:var(--gold2);text-shadow:0 0 30px rgba(200,168,78,.15);
+border-image:linear-gradient(90deg,transparent,var(--gold4),var(--gold1),var(--gold4),transparent) 1!important}
+[data-theme="medina"] .card::before{background:linear-gradient(90deg,transparent,var(--gold1),var(--gold2),var(--gold1),transparent)!important}
+[data-theme="medina"] .card{background:linear-gradient(180deg,rgba(36,28,16,.98),rgba(28,22,12,.98))!important;border-color:rgba(200,168,78,.18)!important}
+[data-theme="medina"] .card-title{color:var(--gold2)!important}
+[data-theme="medina"] .sidebar{background:linear-gradient(180deg,#1a1309,#140f07)!important}
+[data-theme="medina"] .s-div::after{content:'✦';position:absolute;left:50%;transform:translateX(-50%);font-size:.3rem;color:var(--gold4);margin-top:-2px}
+[data-theme="medina"] .code pre{color:var(--gold2)}
+[data-theme="medina"] .dc-name{color:var(--gold2)!important}
+
+/* ============================================================
+   🕋 ANDALUS — Interlocking Moorish arches
+   ============================================================ */
+[data-theme="andalus"] body{
+background-image:
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M0 50Q25 0 50 50Q75 0 100 50' fill='none' stroke='rgba(196,162,78,0.04)' stroke-width='0.6'/%3E%3Cpath d='M0 50Q25 100 50 50Q75 100 100 50' fill='none' stroke='rgba(196,162,78,0.04)' stroke-width='0.6'/%3E%3Cpath d='M50 0Q0 25 50 50Q0 75 50 100' fill='none' stroke='rgba(74,122,186,0.035)' stroke-width='0.5'/%3E%3Cpath d='M50 0Q100 25 50 50Q100 75 50 100' fill='none' stroke='rgba(74,122,186,0.035)' stroke-width='0.5'/%3E%3Ccircle cx='50' cy='50' r='22' fill='none' stroke='rgba(196,162,78,0.025)' stroke-width='0.3'/%3E%3C/svg%3E"),
+  radial-gradient(ellipse at 20% 20%,rgba(74,122,186,.1),transparent 45%),
+  radial-gradient(ellipse at 80% 80%,rgba(196,162,78,.06),transparent 40%);
+background-color:#0a0e1e}
+[data-theme="andalus"] .header::after{content:'❖ ═══ ✦ ═══ ☽ ═══ ✦ ═══ ❖'}
+[data-theme="andalus"] .page-title{color:var(--gold2);text-shadow:0 0 25px rgba(74,122,186,.15);
+border-image:linear-gradient(90deg,transparent,var(--ac2),var(--gold1),var(--ac2),transparent) 1!important}
+[data-theme="andalus"] .card::before{background:linear-gradient(90deg,transparent,var(--ac2),var(--gold1),var(--ac2),transparent)!important}
+[data-theme="andalus"] .card{background:linear-gradient(180deg,rgba(16,20,42,.98),rgba(12,16,34,.98))!important;border-color:rgba(74,122,186,.18)!important}
+[data-theme="andalus"] .card-title{color:var(--gold2)!important}
+[data-theme="andalus"] .sidebar{background:linear-gradient(180deg,#0e1228,#0a0e1e)!important}
+[data-theme="andalus"] .s-div::after{content:'◆';position:absolute;left:50%;transform:translateX(-50%);font-size:.25rem;color:var(--ac2);margin-top:-2px}
+[data-theme="andalus"] .code pre{color:var(--gold2)}
+[data-theme="andalus"] .dc-name{color:var(--gold2)!important}
+
+/* ============================================================
+   🌿 OTTOMAN — Hexagonal tulip lattice
+   ============================================================ */
+[data-theme="ottoman"] body{
+background-image:
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='104' viewBox='0 0 120 104'%3E%3Cpath d='M60 0L120 26L120 78L60 104L0 78L0 26Z' fill='none' stroke='rgba(62,210,190,0.035)' stroke-width='0.5'/%3E%3Cpath d='M60 15L108 36L108 68L60 89L12 68L12 36Z' fill='none' stroke='rgba(62,210,190,0.025)' stroke-width='0.4'/%3E%3Ccircle cx='60' cy='52' r='14' fill='none' stroke='rgba(168,212,160,0.025)' stroke-width='0.3'/%3E%3Cpath d='M55 38Q60 28 65 38Q60 32 55 38' fill='none' stroke='rgba(168,212,160,0.03)' stroke-width='0.5'/%3E%3C/svg%3E"),
+  radial-gradient(ellipse at 30% 15%,rgba(62,210,190,.07),transparent 45%),
+  radial-gradient(ellipse at 70% 85%,rgba(168,212,160,.04),transparent 40%);
+background-color:#081614}
+[data-theme="ottoman"] .header::after{content:'❀ ─── ✿ ─── ❁ ─── ✿ ─── ❀'}
+[data-theme="ottoman"] .page-title{color:var(--iznik2);text-shadow:0 0 25px rgba(62,210,190,.12);
+border-image:linear-gradient(90deg,transparent,var(--iznik4),var(--iznik1),var(--iznik4),transparent) 1!important}
+[data-theme="ottoman"] .card::before{background:linear-gradient(90deg,transparent,var(--iznik3),var(--iznik1),var(--iznik3),transparent)!important}
+[data-theme="ottoman"] .card{background:linear-gradient(180deg,rgba(14,34,30,.98),rgba(10,28,24,.98))!important;border-color:rgba(62,210,190,.15)!important}
+[data-theme="ottoman"] .card-title{color:var(--iznik2)!important}
+[data-theme="ottoman"] .sidebar{background:linear-gradient(180deg,#0c1e1a,#081614)!important}
+[data-theme="ottoman"] .s-div::after{content:'✿';position:absolute;left:50%;transform:translateX(-50%);font-size:.3rem;color:var(--iznik3);margin-top:-2px}
+[data-theme="ottoman"] .code pre{color:var(--iznik2)}
+[data-theme="ottoman"] .dc-name{color:var(--iznik2)!important}
+
+/* ============================================================
+   🏜️ SAHARA — Diamond dunes + desert night
+   ============================================================ */
+[data-theme="sahara"] body{
+background-image:
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M50 0L100 50L50 100L0 50Z' fill='none' stroke='rgba(212,160,96,0.035)' stroke-width='0.5'/%3E%3Cpath d='M50 15L85 50L50 85L15 50Z' fill='none' stroke='rgba(212,160,96,0.025)' stroke-width='0.4'/%3E%3Cpath d='M50 30L70 50L50 70L30 50Z' fill='none' stroke='rgba(138,106,208,0.025)' stroke-width='0.3'/%3E%3C/svg%3E"),
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='60' viewBox='0 0 200 60'%3E%3Cpath d='M0 40Q30 10 60 35Q90 55 120 30Q150 10 180 38Q195 48 200 40' fill='none' stroke='rgba(212,160,96,0.025)' stroke-width='0.5'/%3E%3C/svg%3E"),
+  radial-gradient(ellipse at 75% 10%,rgba(138,106,208,.07),transparent 40%),
+  radial-gradient(ellipse at 25% 85%,rgba(212,160,96,.07),transparent 45%);
+background-color:#10081a}
+[data-theme="sahara"] .header::after{content:'☾ ··· ✦ ··· ❖ ··· ✦ ··· ☾'}
+[data-theme="sahara"] .page-title{color:var(--sand2);text-shadow:0 0 25px rgba(212,160,96,.12);
+border-image:linear-gradient(90deg,transparent,var(--ac2),var(--sand1),var(--ac2),transparent) 1!important}
+[data-theme="sahara"] .card::before{background:linear-gradient(90deg,transparent,var(--ac2),var(--sand1),var(--ac2),transparent)!important}
+[data-theme="sahara"] .card{background:linear-gradient(180deg,rgba(26,16,40,.98),rgba(20,12,30,.98))!important;border-color:rgba(212,160,96,.15)!important}
+[data-theme="sahara"] .card-title{color:var(--sand2)!important}
+[data-theme="sahara"] .sidebar{background:linear-gradient(180deg,#160a22,#10081a)!important}
+[data-theme="sahara"] .s-div::after{content:'☾';position:absolute;left:50%;transform:translateX(-50%);font-size:.3rem;color:var(--sand3);margin-top:-2px}
+[data-theme="sahara"] .code pre{color:var(--sand2)}
+[data-theme="sahara"] .dc-name{color:var(--sand2)!important}
+
+/* ============================================================
+   🌙 ISFAHAN — Girih pentagons + muqarnas depth
+   ============================================================ */
+[data-theme="isfahan"] body{
+background-image:
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='110' viewBox='0 0 110 110'%3E%3Cpath d='M55 5L95 28L95 72L55 95L15 72L15 28Z' fill='none' stroke='rgba(80,160,210,0.04)' stroke-width='0.5'/%3E%3Cpath d='M55 20L80 35L80 65L55 80L30 65L30 35Z' fill='none' stroke='rgba(64,200,184,0.03)' stroke-width='0.4'/%3E%3Cpath d='M55 0L55 110M0 55L110 55' stroke='rgba(80,160,210,0.015)' stroke-width='0.3'/%3E%3Ccircle cx='55' cy='55' r='25' fill='none' stroke='rgba(80,160,210,0.02)' stroke-width='0.3'/%3E%3Ccircle cx='55' cy='55' r='40' fill='none' stroke='rgba(64,200,184,0.015)' stroke-width='0.3'/%3E%3Cpath d='M15 28L95 72M95 28L15 72' stroke='rgba(80,160,210,0.015)' stroke-width='0.3'/%3E%3C/svg%3E"),
+  radial-gradient(ellipse at 50% 20%,rgba(80,160,210,.08),transparent 45%),
+  radial-gradient(ellipse at 50% 80%,rgba(64,200,184,.04),transparent 40%);
+background-color:#08081e}
+[data-theme="isfahan"] .header::after{content:'✧ ═══ ◇ ═══ ✦ ═══ ◇ ═══ ✧'}
+[data-theme="isfahan"] .page-title{color:var(--lapis2);text-shadow:0 0 30px rgba(80,160,210,.15);
+border-image:linear-gradient(90deg,transparent,var(--lapis4),var(--ac2),var(--lapis1),var(--ac2),var(--lapis4),transparent) 1!important}
+[data-theme="isfahan"] .card::before{background:linear-gradient(90deg,transparent,var(--ac2),var(--lapis1),var(--ac2),transparent)!important}
+[data-theme="isfahan"] .card{background:linear-gradient(180deg,rgba(14,14,42,.98),rgba(10,10,34,.98))!important;border-color:rgba(80,160,210,.18)!important;
+box-shadow:0 2px 8px rgba(4,4,15,.5),0 4px 16px rgba(4,4,15,.3)!important}
+[data-theme="isfahan"] .card-title{color:var(--lapis2)!important}
+[data-theme="isfahan"] .sidebar{background:linear-gradient(180deg,#0c0c28,#08081e)!important}
+[data-theme="isfahan"] .s-div::after{content:'◇';position:absolute;left:50%;transform:translateX(-50%);font-size:.3rem;color:var(--lapis3);margin-top:-2px}
+[data-theme="isfahan"] .code pre{color:var(--lapis2)}
+[data-theme="isfahan"] .dc-name{color:var(--lapis2)!important}
+[data-theme="isfahan"] .bismillah{color:var(--ac2)!important}
+
+/* ============================================================
+   📜 DAMASCUS — Vine arabesques (LIGHT THEME)
+   ============================================================ */
+[data-theme="damascus"] body{
+background-image:
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cpath d='M70 20Q90 40 70 70Q50 40 70 20Z' fill='none' stroke='rgba(45,120,60,0.06)' stroke-width='0.5'/%3E%3Cpath d='M70 70Q90 100 70 120Q50 100 70 70Z' fill='none' stroke='rgba(45,120,60,0.06)' stroke-width='0.5'/%3E%3Cpath d='M20 70Q40 50 70 70Q40 90 20 70Z' fill='none' stroke='rgba(200,160,64,0.04)' stroke-width='0.5'/%3E%3Cpath d='M70 70Q100 50 120 70Q100 90 70 70Z' fill='none' stroke='rgba(200,160,64,0.04)' stroke-width='0.5'/%3E%3Ccircle cx='70' cy='70' r='35' fill='none' stroke='rgba(45,120,60,0.03)' stroke-width='0.3'/%3E%3C/svg%3E"),
+  radial-gradient(ellipse at 30% 20%,rgba(45,120,60,.04),transparent 45%),
+  radial-gradient(ellipse at 70% 80%,rgba(200,160,64,.03),transparent 40%);
+background-color:#f5f0e5}
+[data-theme="damascus"] .header{background:linear-gradient(180deg,#efe8d8,#e8e0d0)!important}
+[data-theme="damascus"] .header::after{content:'❧ ── ✦ ── ❧ ── ✦ ── ❧';color:var(--vine1)!important}
+[data-theme="damascus"] .page-title{color:var(--vine3)!important;text-shadow:none!important;
+border-image:linear-gradient(90deg,transparent,var(--ac2),var(--vine1),var(--ac2),transparent) 1!important}
+[data-theme="damascus"] .card::before{background:linear-gradient(90deg,transparent,var(--vine1),var(--ac2),var(--vine1),transparent)!important}
+[data-theme="damascus"] .card{background:linear-gradient(180deg,rgba(255,252,245,.98),rgba(248,244,232,.98))!important;border-color:rgba(45,120,60,.2)!important;box-shadow:0 2px 8px rgba(45,60,30,.06)!important}
+[data-theme="damascus"] .card-title{color:var(--vine3)!important}
+[data-theme="damascus"] .sidebar{background:linear-gradient(180deg,#efe8d8,#e8e0d0)!important}
+[data-theme="damascus"] .s-div::after{content:'❧';position:absolute;left:50%;transform:translateX(-50%);font-size:.3rem;color:var(--vine3);margin-top:-2px}
+[data-theme="damascus"] .code{background:rgba(26,42,20,.06)!important}
+[data-theme="damascus"] .code pre{color:var(--vine3)}
+[data-theme="damascus"] .dc-name{color:var(--vine3)!important}
+[data-theme="damascus"] .bismillah{color:var(--vine1)!important}
+
+/* ============================================================
+   🔷 FEZ — Zellige rosettes (LIGHT THEME)
+   ============================================================ */
+[data-theme="fez"] body{
+background-image:
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='87' viewBox='0 0 100 87'%3E%3Cpath d='M50 0L93.3 25L93.3 75L50 100L6.7 75L6.7 25Z' fill='none' stroke='rgba(30,60,150,0.05)' stroke-width='0.6'/%3E%3Cpath d='M50 15L80 32.5L80 67.5L50 85L20 67.5L20 32.5Z' fill='none' stroke='rgba(30,60,150,0.035)' stroke-width='0.4'/%3E%3Ccircle cx='50' cy='50' r='18' fill='none' stroke='rgba(184,112,48,0.03)' stroke-width='0.3'/%3E%3Cpath d='M50 32L62 44L62 56L50 68L38 56L38 44Z' fill='none' stroke='rgba(30,60,150,0.04)' stroke-width='0.4'/%3E%3C/svg%3E"),
+  radial-gradient(ellipse at 25% 25%,rgba(30,60,150,.04),transparent 45%),
+  radial-gradient(ellipse at 75% 75%,rgba(184,112,48,.03),transparent 40%);
+background-color:#f0ece4}
+[data-theme="fez"] .header{background:linear-gradient(180deg,#e8e2d8,#e0dcd0)!important}
+[data-theme="fez"] .header::after{content:'✦ ── ◆ ── ✦ ── ◆ ── ✦';color:var(--cobalt1)!important}
+[data-theme="fez"] .page-title{color:var(--cobalt3)!important;text-shadow:none!important;
+border-image:linear-gradient(90deg,transparent,var(--ac2),var(--cobalt1),var(--ac2),transparent) 1!important}
+[data-theme="fez"] .card::before{background:linear-gradient(90deg,transparent,var(--cobalt1),var(--ac2),var(--cobalt1),transparent)!important}
+[data-theme="fez"] .card{background:linear-gradient(180deg,rgba(252,250,245,.98),rgba(245,242,235,.98))!important;border-color:rgba(30,60,150,.18)!important;box-shadow:0 2px 8px rgba(20,24,48,.06)!important}
+[data-theme="fez"] .card-title{color:var(--cobalt3)!important}
+[data-theme="fez"] .sidebar{background:linear-gradient(180deg,#e8e2d8,#e0dcd0)!important}
+[data-theme="fez"] .s-div::after{content:'◆';position:absolute;left:50%;transform:translateX(-50%);font-size:.25rem;color:var(--cobalt3);margin-top:-2px}
+[data-theme="fez"] .code{background:rgba(20,24,48,.06)!important}
+[data-theme="fez"] .code pre{color:var(--cobalt3)}
+[data-theme="fez"] .dc-name{color:var(--cobalt3)!important}
+[data-theme="fez"] .bismillah{color:var(--cobalt1)!important}
+
+/* ============================================================
+   🌟 SAMARKAND — Grand portal geometry (monumental)
+   ============================================================ */
+[data-theme="samarkand"] body{
+background-image:
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='130' height='130' viewBox='0 0 130 130'%3E%3Cpath d='M65 0L130 65L65 130L0 65Z' fill='none' stroke='rgba(200,170,60,0.035)' stroke-width='0.6'/%3E%3Cpath d='M65 20L110 65L65 110L20 65Z' fill='none' stroke='rgba(48,80,192,0.03)' stroke-width='0.5'/%3E%3Cpath d='M65 35L95 65L65 95L35 65Z' fill='none' stroke='rgba(200,170,60,0.025)' stroke-width='0.4'/%3E%3Cpath d='M65 5L65 125M5 65L125 65' stroke='rgba(48,80,192,0.015)' stroke-width='0.3'/%3E%3Ccircle cx='65' cy='65' r='30' fill='none' stroke='rgba(200,170,60,0.02)' stroke-width='0.3'/%3E%3Ccircle cx='65' cy='65' r='50' fill='none' stroke='rgba(48,80,192,0.015)' stroke-width='0.3'/%3E%3C/svg%3E"),
+  radial-gradient(ellipse at 50% 10%,rgba(200,170,60,.08),transparent 40%),
+  radial-gradient(ellipse at 50% 90%,rgba(48,80,192,.06),transparent 40%);
+background-color:#060820}
+[data-theme="samarkand"] .header::after{content:'★ ═══ ✦ ═══ ❖ ═══ ✦ ═══ ★'}
+[data-theme="samarkand"] .page-title{color:var(--timur2)!important;text-shadow:0 0 30px rgba(200,170,60,.18);
+font-size:1.5rem!important;letter-spacing:.08em!important;
+border-image:linear-gradient(90deg,transparent,var(--ac2),var(--timur1),var(--timur2),var(--timur1),var(--ac2),transparent) 1!important}
+[data-theme="samarkand"] .card::before{background:linear-gradient(90deg,transparent,var(--ac2),var(--timur1),var(--ac2),transparent)!important}
+[data-theme="samarkand"] .card{background:linear-gradient(180deg,rgba(12,14,40,.98),rgba(8,10,32,.98))!important;border-color:rgba(200,170,60,.18)!important;
+padding:22px!important;box-shadow:0 3px 12px rgba(3,4,16,.6),0 6px 24px rgba(3,4,16,.3)!important}
+[data-theme="samarkand"] .card-title{color:var(--timur2)!important;font-size:1rem!important}
+[data-theme="samarkand"] .sidebar{background:linear-gradient(180deg,#0a0c2a,#060820)!important}
+[data-theme="samarkand"] .s-div::after{content:'★';position:absolute;left:50%;transform:translateX(-50%);font-size:.3rem;color:var(--timur3);margin-top:-2px}
+[data-theme="samarkand"] .code pre{color:var(--timur2)}
+[data-theme="samarkand"] .dc-name{color:var(--timur2)!important}
+[data-theme="samarkand"] .bismillah{color:var(--timur2)!important;font-size:1.05rem!important}
+</style>
+</head>
+<body>
+<div class="app">
+<!-- Header -->
+<div class="header">
+<div class="title-block">
+<button class="menu-toggle" onclick="toggleSB()">☰</button>
+<svg class="site-logo" viewBox="0 0 602.73 321.1" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M266.71 157.43c-1.25-8.26-5.47-15.59-12.33-20.44a34.62 34.62 0 0 0-23.1-6.49c-5.11.42-10.02 2.05-14.77 4.1-4.64 2.01-8.71 4.98-12.88 7.77l-10.01-10.01c6.17-5.83 13.23-10.6 21.21-13.5 7.63-2.78 15.7-4.09 23.78-3.17 12.57 1.42 24.26 7.32 32.36 17.14 7.16 8.69 10.79 19.71 10.83 30.77h-15.09Z"/><path d="M231.29 187.43c5.79 5.79 14.89 6.03 22.2 3.88 5.33-1.57 10.06-4.75 13.99-8.66l10.28 10.28c-6.56 6.84-14.97 12.02-24.28 13.68-10.95 1.96-22.87-.38-31.47-7.91-4.87-4.27-8.42-9.88-10.21-16.04l14.41-1.27c.67 2.62 2.55 4.51 5.07 6.03Z"/><path d="M185.78 194.08c7.57 12.06 19.43 21.48 33.32 24.67 14.5 3.33 30.27.09 42.35-8.75 3.62-2.65 6.85-5.82 9.59-9.35l11.27 11.27c-6.42 7.52-14.51 13.75-23.66 17.61-13.26 5.59-28.29 6.63-42.1 2.66-14.5-4.17-27.22-13.6-35.42-26.23l4.66-11.87Z"/><circle cx="237.49" cy="163.6" r="14.14"/><path d="M226.11 140.39l-38.13 7.09 8.89 8.89-47.62 47.63 12.67 12.67 47.63-47.63 8.89 8.89 7.68-37.54Z"/><path d="M272.15 140.39l38.13 7.09-8.89 8.89 47.62 47.63-12.67 12.67-47.63-47.63-8.89 8.89-7.68-37.54Z"/><path d="M171.34 187.56l-25.54-25.54 12.67-12.67 25.54 25.54 12.67 12.67-12.67 12.67-12.67-12.67Z"/><path d="M324.43 161.44l25.54 25.54-12.67 12.67-25.54-25.54-12.67-12.67 12.67-12.67 12.67 12.67Z"/></svg>
+<div><h1>SMART HOME KIDS LAB <span class="ver">v1.0</span></h1><div class="subtitle" data-i18n="subtitle">Connect • Automate • Control</div></div>
+</div>
+<span class="bismillah">﷽</span>
+<div class="header-right">
+<div class="level-group">
+<button class="level-btn active" onclick="setLevel('newbie')" title="Newbie">🟢</button>
+<button class="level-btn" onclick="setLevel('explorer')" title="Explorer">🟡</button>
+<button class="level-btn" onclick="setLevel('advanced')" title="Advanced">🔴</button>
+</div>
+<button class="theme-indicator" id="themeBtn" onclick="openThemeChooser()"><span class="th-swatch" id="thSwatch"></span><span class="th-name" id="thName">Stealth</span><span class="th-arrow">▾</span></button>
+<div class="lang-group">
+<button class="lang-btn active" onclick="setLang('en')">EN</button>
+<button class="lang-btn" onclick="setLang('fr')">FR</button>
+<button class="lang-btn" onclick="setLang('ar')">AR</button>
+</div>
+</div>
+</div>
+<!-- Theme Chooser Modal -->
+<div class="tc-overlay" id="tcOverlay" onclick="closeTC(event)">
+<div class="tc-modal">
+<div class="tc-tabs">
+<button class="tc-tab active" onclick="tcTab(0,this)">🎨 Standard</button>
+<button class="tc-tab" onclick="tcTab(1,this)">🕌 Islamic</button>
+</div>
+<div class="tc-panel" id="tcStd">
+<div class="tc-grid" id="tcStdGrid"></div>
+</div>
+<div class="tc-panel tc-islamic" id="tcIsl" style="display:none">
+<div class="tc-bismillah">﷽</div>
+<div class="tc-grid" id="tcIslGrid"></div>
+</div>
+</div>
+</div>
+<!-- Layout -->
+<div class="layout">
+<nav class="sidebar" id="sb"></nav>
+<main class="main" id="main"></main>
+</div>
+<div class="m-bar" id="mbar"></div>
+</div>
+
+<script>
+/* ============================================================
+   I18N
+   ============================================================ */
+const I={
+en:{subtitle:"Connect • Automate • Control",basecamp:"Base Camp",setup:"Setup",smarthome:"How Smart Homes Work",architecture:"HA Architecture",yamlbasics:"YAML Basics",nettools:"Network Tools",integrations:"Integrations",dashboard:"Dashboard 101",cards:"Cards Catalog",automations:"Automations",yamllab:"YAML Lab",scenes:"Scenes",scripts:"Scripts",remotevoice:"Remote & Voice",addons:"Add-ons",esphome:"ESPHome Bridge",wled:"WLED Bridge",microbit:"micro:bit Bridge",projects:"Projects",safety:"Safety & Security",troubleshoot:"Troubleshooting",help:"Help",
+learn:"Learn",setupCat:"Setup",build:"Build",connect:"Connect",projectsCat:"Projects",safetyCat:"Safety",
+tryIt:"Try it",copy:"Copy",quest:"Quests",badges:"Badges",
+newbie:"Newbie",explorer:"Explorer",advanced:"Advanced",
+welcome:"You built the devices. Now build the brain. Home Assistant connects your ESP32 sensors, WLED strips, and micro:bit — all in one dashboard.",
+searchPh:"Search..."},
+fr:{subtitle:"Connecte • Automatise • Contrôle",basecamp:"Base",setup:"Installation",smarthome:"Maison Intelligente",architecture:"Architecture HA",yamlbasics:"Bases YAML",nettools:"Outils Réseau",integrations:"Intégrations",dashboard:"Tableau de Bord",cards:"Catalogue Cartes",automations:"Automatisations",yamllab:"Labo YAML",scenes:"Scènes",scripts:"Scripts",remotevoice:"Contrôle à Distance",addons:"Extensions",esphome:"Pont ESPHome",wled:"Pont WLED",microbit:"Pont micro:bit",projects:"Projets",safety:"Sécurité",troubleshoot:"Dépannage",help:"Aide",
+learn:"Apprendre",setupCat:"Installation",build:"Construire",connect:"Connecter",projectsCat:"Projets",safetyCat:"Sécurité",
+tryIt:"Essayer",copy:"Copier",quest:"Quêtes",badges:"Badges",
+newbie:"Débutant",explorer:"Explorateur",advanced:"Avancé",
+welcome:"Tu as fabriqué les appareils. Maintenant construis le cerveau. Home Assistant connecte tes capteurs ESP32, tes LEDs WLED et ton micro:bit — tout dans un tableau de bord.",
+searchPh:"Chercher..."},
+ar:{subtitle:"إتصل • أتمت • تحكم",basecamp:"القاعدة",setup:"التثبيت",smarthome:"كيف تعمل المنازل الذكية",architecture:"بنية HA",yamlbasics:"أساسيات YAML",nettools:"أدوات الشبكة",integrations:"التكاملات",dashboard:"لوحة التحكم",cards:"كتالوج البطاقات",automations:"الأتمتة",yamllab:"مختبر YAML",scenes:"المشاهد",scripts:"السكربتات",remotevoice:"التحكم عن بعد والصوت",addons:"الإضافات",esphome:"جسر ESPHome",wled:"جسر WLED",microbit:"جسر micro:bit",projects:"المشاريع",safety:"الأمان",troubleshoot:"استكشاف الأخطاء",help:"مساعدة",
+learn:"تعلم",setupCat:"التثبيت",build:"بناء",connect:"اتصال",projectsCat:"مشاريع",safetyCat:"أمان",
+tryIt:"جرّب",copy:"نسخ",quest:"المهام",badges:"الشارات",
+newbie:"مبتدئ",explorer:"مستكشف",advanced:"متقدم",
+welcome:"بنيت الأجهزة. الآن ابنِ الدماغ. Home Assistant يربط حساسات ESP32 وشرائط WLED و micro:bit — كلها في لوحة تحكم واحدة.",
+searchPh:"ابحث..."}
+};
+let lang='en';
+function t(k){return I[lang][k]||I.en[k]||k}
+
+/* ============================================================
+   PAGES
+   ============================================================ */
+const PAGES=[
+{id:'basecamp',icon:'🏠',cat:'nav'},
+{id:'setup',icon:'🔧',cat:'setupCat'},
+{id:'smarthome',icon:'📚',cat:'learn'},
+{id:'architecture',icon:'🧠',cat:'learn'},
+{id:'yamlbasics',icon:'📐',cat:'learn'},
+{id:'nettools',icon:'🌐',cat:'setupCat'},
+{id:'integrations',icon:'🔌',cat:'setupCat'},
+{id:'dashboard',icon:'📊',cat:'build'},
+{id:'cards',icon:'🎴',cat:'build'},
+{id:'automations',icon:'⚡',cat:'build'},
+{id:'yamllab',icon:'📝',cat:'build'},
+{id:'scenes',icon:'🎭',cat:'build'},
+{id:'scripts',icon:'📜',cat:'build'},
+{id:'remotevoice',icon:'📱',cat:'connect'},
+{id:'addons',icon:'🧩',cat:'connect'},
+{id:'esphome',icon:'🌡️',cat:'connect'},
+{id:'wled',icon:'💡',cat:'connect'},
+{id:'microbit',icon:'🎮',cat:'connect'},
+{id:'projects',icon:'🏗️',cat:'projectsCat'},
+{id:'safety',icon:'🛡️',cat:'safetyCat'},
+{id:'troubleshoot',icon:'🛠️',cat:'safetyCat'},
+{id:'help',icon:'❓',cat:'safetyCat'}
+];
+
+/* ============================================================
+   ENTITY SIMULATOR — persistent state
+   ============================================================ */
+const ENT={
+'sensor.esp32_temperature':{icon:'🌡️',name:'ESP32 Temperature',state:23.4,unit:'°C',domain:'sensor',drift:.15},
+'sensor.esp32_humidity':{icon:'💧',name:'ESP32 Humidity',state:62,unit:'%',domain:'sensor',drift:.5},
+'sensor.esp32_light_level':{icon:'☀️',name:'ESP32 Light Level',state:340,unit:'lx',domain:'sensor',drift:5},
+'sensor.esp32_pressure':{icon:'🌀',name:'ESP32 Pressure',state:1013,unit:'hPa',domain:'sensor',drift:.2},
+'sensor.microbit_temperature':{icon:'🌡️',name:'micro:bit Temp',state:22.1,unit:'°C',domain:'sensor',drift:.1},
+'sensor.microbit_light_level':{icon:'🔆',name:'micro:bit Light',state:185,unit:'lx',domain:'sensor',drift:3},
+'sensor.microbit_compass':{icon:'🧭',name:'micro:bit Compass',state:247,unit:'°',domain:'sensor',drift:2},
+'sensor.microbit_tilt_x':{icon:'↔️',name:'micro:bit Tilt X',state:-12,unit:'°',domain:'sensor',drift:1},
+'light.wled_strip':{icon:'💡',name:'WLED Strip',state:'on',brightness:80,color:'#ff4500',domain:'light'},
+'light.bedroom_bulb':{icon:'💡',name:'Bedroom Bulb',state:'off',brightness:0,color:'#ffa500',domain:'light'},
+'light.desk_lamp':{icon:'💡',name:'Desk Lamp',state:'on',brightness:60,color:'#fff3e0',domain:'light'},
+'light.ceiling':{icon:'💡',name:'Ceiling Light',state:'on',brightness:100,color:'#fffde7',domain:'light'},
+'switch.smart_plug':{icon:'🔌',name:'Smart Plug',state:'on',domain:'switch'},
+'switch.fan':{icon:'🌀',name:'Fan',state:'off',domain:'switch'},
+'switch.heater':{icon:'🔥',name:'Heater',state:'off',domain:'switch'},
+'binary_sensor.door':{icon:'🚪',name:'Front Door',state:'closed',domain:'binary_sensor'},
+'binary_sensor.motion':{icon:'👁️',name:'Motion Sensor',state:'clear',domain:'binary_sensor'},
+'weather.home':{icon:'🌤️',name:'Home Weather',state:'Sunny',temp:18,domain:'weather'},
+'media_player.speaker':{icon:'🎵',name:'Speaker',state:'paused',domain:'media_player'},
+'automation.morning_lights':{icon:'⚡',name:'Morning Lights',state:'on',domain:'automation'},
+'automation.night_mode':{icon:'⚡',name:'Night Mode',state:'on',domain:'automation'},
+'automation.temp_alert':{icon:'⚡',name:'Temp Alert',state:'on',domain:'automation'}
+};
+
+// Drift sensors over time
+setInterval(()=>{
+    for(let id in ENT){
+        let e=ENT[id];
+        if(e.drift){
+            e.state=Math.round((e.state+(Math.random()-.5)*e.drift*2)*10)/10;
+        }
+    }
+},5000);
+
+function toggleEntity(id){
+    let e=ENT[id];if(!e)return;
+    if(e.domain==='light'||e.domain==='switch'||e.domain==='automation'){
+        e.state=e.state==='on'?'off':'on';
+        if(e.domain==='light')e.brightness=e.state==='on'?80:0;
+    }
+    if(e.domain==='binary_sensor'){
+        e.state=e.state==='closed'?'open':'closed';
+        if(id.includes('motion'))e.state=e.state==='clear'?'detected':'clear';
+    }
+    if(e.domain==='media_player')e.state=e.state==='paused'?'playing':'paused';
+    renderPage();
+}
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let currentPage='basecamp';
+let currentLevel='newbie';
+let quests=[false,false,false,false,false,false,false,false];
+
+// MQTT sim
+let mqttSubs=['home/#'];
+let mqttLog=[];
+
+function save(k,v){try{localStorage.setItem('ha_'+k,v)}catch(e){}}
+function load(k){try{return localStorage.getItem('ha_'+k)}catch(e){return null}}
+function loadState(){
+    let th=load('theme');if(th)setTheme(th,true);
+    let ln=load('lang');if(ln)setLang(ln,true);
+    let pg=load('page');if(pg)currentPage=pg;
+    let lv=load('level');if(lv)setLevel(lv,true);
+    let q=load('quests');if(q)try{quests=JSON.parse(q)}catch(e){}
+}
+
+/* ============================================================
+   THEME SYSTEM — 16 THEMES + CHOOSER
+   ============================================================ */
+const THEME_DATA={
+  // Standard
+  stealth:  {emoji:'🌙',name:'Stealth',desc:'Dark green',cat:'std',bg:'#020617',ac:'#22c55e',ac2:'#3b82f6'},
+  neon:     {emoji:'⚡',name:'Neon',desc:'Cyan glow',cat:'std',bg:'#0a0a1a',ac:'#00d4ff',ac2:'#ff6600'},
+  arctic:   {emoji:'☁️',name:'Arctic',desc:'Light blue',cat:'std',bg:'#e8eef4',ac:'#2563eb',ac2:'#06b6d4'},
+  blaze:    {emoji:'🔥',name:'Blaze',desc:'Warm orange',cat:'std',bg:'#fdf2e9',ac:'#ea580c',ac2:'#dc2626'},
+  ha:       {emoji:'🏠',name:'HA Blue',desc:'Official',cat:'std',bg:'#1c1c2e',ac:'#03a9f4',ac2:'#29b6f6'},
+  forest:   {emoji:'🌲',name:'Forest',desc:'Nature dark',cat:'std',bg:'#0a1a0a',ac:'#4ade80',ac2:'#86efac'},
+  tactical: {emoji:'⚔️',name:'Tactical',desc:'Military gold',cat:'std',bg:'#1a1a14',ac:'#d4a017',ac2:'#fbbf24'},
+  deepsea:  {emoji:'🌊',name:'Deep Sea',desc:'Abyss teal',cat:'std',bg:'#0a1628',ac:'#06b6d4',ac2:'#22d3ee'},
+  // Islamic
+  medina:   {emoji:'🕌',name:'Medina',desc:'Gold • Mosque',cat:'isl',bg:'#120e07',ac:'#c8a84e',ac2:'#2d8a4e'},
+  andalus:  {emoji:'🕋',name:'Andalus',desc:'Blue • Alhambra',cat:'isl',bg:'#0a0e1e',ac:'#c4a24e',ac2:'#4a7aba'},
+  ottoman:  {emoji:'🌿',name:'Ottoman',desc:'Teal • Iznik',cat:'isl',bg:'#081614',ac:'#3ed2be',ac2:'#a8d4a0'},
+  sahara:   {emoji:'🏜️',name:'Sahara',desc:'Sand • Desert',cat:'isl',bg:'#10081a',ac:'#d4a060',ac2:'#8a6ad0'},
+  isfahan:  {emoji:'🌙',name:'Isfahan',desc:'Lapis • Persian',cat:'isl',bg:'#08081e',ac:'#50a0d2',ac2:'#40c8b8'},
+  damascus: {emoji:'📜',name:'Damascus',desc:'Green • Mosaic',cat:'isl',bg:'#f5f0e5',ac:'#2d783c',ac2:'#c8a040'},
+  fez:      {emoji:'🔷',name:'Fez',desc:'Cobalt • Zellige',cat:'isl',bg:'#f0ece4',ac:'#1e3c96',ac2:'#b87030'},
+  samarkand:{emoji:'🌟',name:'Samarkand',desc:'Gold • Grand',cat:'isl',bg:'#060820',ac:'#c8aa3c',ac2:'#3050c0'}
+};
+const THEMES=Object.keys(THEME_DATA);
+const ISLAMIC_THEMES=['medina','andalus','ottoman','sahara','isfahan','damascus','fez','samarkand'];
+
+let currentTheme='stealth';
+
+function setTheme(th,silent){
+    currentTheme=th;
+    document.documentElement.setAttribute('data-theme',th);
+    // Toggle islamic-active class on body for structural CSS
+    const isIslamic=ISLAMIC_THEMES.includes(th);
+    document.body.classList.toggle('islamic-active',isIslamic);
+    // Update indicator button
+    const td=THEME_DATA[th];
+    if(td){
+        const swatch=document.getElementById('thSwatch');
+        const name=document.getElementById('thName');
+        if(swatch){
+            if(isIslamic){
+                swatch.style.background='none';
+                swatch.textContent=td.emoji;
+                swatch.style.fontSize='.7rem';
+                swatch.style.width='auto';
+                swatch.style.height='auto';
+                swatch.style.border='none';
+            }else{
+                swatch.textContent='';
+                swatch.style.background=td.ac;
+                swatch.style.fontSize='';
+                swatch.style.width='12px';
+                swatch.style.height='12px';
+                swatch.style.border='1.5px solid rgba(255,255,255,.2)';
+            }
+        }
+        if(name)name.textContent=td.name;
+    }
+    // Update chooser active states
+    document.querySelectorAll('.tc-card').forEach(c=>c.classList.toggle('active',c.dataset.theme===th));
+    if(!silent)save('theme',th);
+}
+
+function openThemeChooser(){
+    const ov=document.getElementById('tcOverlay');
+    ov.classList.add('open');
+    // Build grids
+    buildTCGrid('tcStdGrid','std');
+    buildTCGrid('tcIslGrid','isl');
+    // Show correct tab
+    const isIsl=ISLAMIC_THEMES.includes(currentTheme);
+    tcTab(isIsl?1:0,document.querySelectorAll('.tc-tab')[isIsl?1:0]);
+}
+
+function buildTCGrid(containerId,cat){
+    const grid=document.getElementById(containerId);
+    if(!grid)return;
+    let html='';
+    for(let id in THEME_DATA){
+        const td=THEME_DATA[id];
+        if(td.cat!==cat)continue;
+        const isActive=currentTheme===id;
+        html+='<div class="tc-card'+(isActive?' active':'')+'" data-theme="'+id+'" onclick="pickTheme(\''+id+'\')">';
+        html+='<div class="tc-swatch"><div class="tc-swatch-inner">';
+        html+='<div class="tc-sw-bg" style="background:'+td.bg+'"></div>';
+        html+='<div class="tc-sw-ac" style="background:'+td.ac+'"></div>';
+        html+='<div class="tc-sw-ac2" style="background:'+td.ac2+'"></div>';
+        html+='</div></div>';
+        html+='<div class="tc-emoji">'+td.emoji+'</div>';
+        html+='<div class="tc-tname">'+td.name+'</div>';
+        html+='<div class="tc-tdesc">'+td.desc+'</div>';
+        html+='</div>';
+    }
+    grid.innerHTML=html;
+}
+
+function pickTheme(th){
+    setTheme(th);
+    document.getElementById('tcOverlay').classList.remove('open');
+}
+
+function closeTC(e){
+    if(e.target===e.currentTarget)e.currentTarget.classList.remove('open');
+}
+
+function tcTab(idx,btn){
+    document.querySelectorAll('.tc-tab').forEach(t=>t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tcStd').style.display=idx===0?'block':'none';
+    document.getElementById('tcIsl').style.display=idx===1?'block':'none';
+}
+function setLang(ln,silent){
+    lang=ln;
+    document.documentElement.setAttribute('lang',ln==='ar'?'ar':'en');
+    document.documentElement.setAttribute('dir',ln==='ar'?'rtl':'ltr');
+    document.querySelectorAll('.lang-btn').forEach((b,i)=>b.classList.toggle('active',['en','fr','ar'][i]===ln));
+    document.querySelector('[data-i18n="subtitle"]').textContent=t('subtitle');
+    renderSB();renderPage();renderMB();
+    if(!silent)save('lang',ln);
+}
+function setLevel(lv,silent){
+    currentLevel=lv;
+    document.querySelectorAll('.level-btn').forEach((b,i)=>b.classList.toggle('active',['newbie','explorer','advanced'][i]===lv));
+    renderPage();
+    if(!silent)save('level',lv);
+}
+function lvlVisible(lv){
+    if(currentLevel==='advanced')return true;
+    if(currentLevel==='explorer')return lv!=='advanced';
+    return lv==='newbie'||lv==='all';
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+function renderSB(){
+    let html='';
+    let lastCat='';
+    PAGES.forEach(p=>{
+        let cat=p.cat==='nav'?'':t(p.cat);
+        if(cat&&cat!==lastCat){
+            if(lastCat)html+='<div class="s-div"></div>';
+            html+='<div class="s-cat">'+cat+'</div>';
+            lastCat=cat;
+        }
+        html+='<div class="s-item'+(currentPage===p.id?' active':'')+'" onclick="nav(\''+p.id+'\')">';
+        html+='<span class="s-icon">'+p.icon+'</span><span class="s-label">'+t(p.id)+'</span></div>';
+    });
+    document.getElementById('sb').innerHTML=html;
+}
+function renderMB(){
+    let html='';
+    PAGES.forEach(p=>{
+        html+='<button class="m-pill'+(currentPage===p.id?' active':'')+'" onclick="nav(\''+p.id+'\')">'+p.icon+'</button>';
+    });
+    document.getElementById('mbar').innerHTML=html;
+}
+function nav(id){currentPage=id;save('page',id);renderSB();renderPage();renderMB();document.querySelector('.main').scrollTop=0;document.getElementById('sb').classList.remove('open')}
+function toggleSB(){document.getElementById('sb').classList.toggle('open')}
+
+/* ============================================================
+   PAGE ROUTING
+   ============================================================ */
+function renderPage(){
+    const m=document.getElementById('main');
+    const fn={
+        basecamp:pgBasecamp,setup:pgSetup,smarthome:pgSmartHome,architecture:pgArchitecture,
+        yamlbasics:pgYamlBasics,nettools:pgNetTools,integrations:pgIntegrations,
+        dashboard:pgDashboard,cards:pgCards,automations:pgAutomations,yamllab:pgYamlLab,
+        scenes:pgScenes,scripts:pgScripts,remotevoice:pgRemoteVoice,addons:pgAddons,
+        esphome:pgEsphome,wled:pgWled,microbit:pgMicrobit,projects:pgProjects,
+        safety:pgSafety,troubleshoot:pgTroubleshoot,help:pgHelp
+    };
+    m.innerHTML=(fn[currentPage]||pgPlaceholder)();
+}
+
+/* ============================================================
+   HELPER FUNCTIONS
+   ============================================================ */
+function esc(s){return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):''}
+function copyTxt(t){navigator.clipboard.writeText(t).catch(()=>{})}
+function toggleQuest(i){quests[i]=!quests[i];save('quests',JSON.stringify(quests));renderPage()}
+function toggleAcc(el){el.closest('.acc').classList.toggle('open')}
+function toggleEntGroup(el){el.closest('.ent-group').classList.toggle('open')}
+function lvlBadge(lv){return lv==='newbie'?'<span class="lvl g">🟢 '+t('newbie')+'</span>':lv==='explorer'?'<span class="lvl y">🟡 '+t('explorer')+'</span>':'<span class="lvl r">🔴 '+t('advanced')+'</span>'}
+
+function codeBlock(code,lang){
+    return'<div class="code"><pre>'+esc(code)+'</pre><button class="copy-btn" onclick="copyTxt(`'+code.replace(/`/g,'\\`').replace(/\\/g,'\\\\')+'`)">'+t('copy')+'</button></div>';
+}
+
+function entTree(){
+    let groups={};
+    for(let id in ENT){
+        let e=ENT[id];
+        let d=e.domain;
+        if(!groups[d])groups[d]={icon:e.icon,entities:[]};
+        groups[d].entities.push({id,e});
+    }
+    let html='<div class="ent-tree">';
+    for(let d in groups){
+        let g=groups[d];
+        html+='<div class="ent-group"><div class="ent-gh" onclick="toggleEntGroup(this)"><span class="arr">▶</span> '+g.icon+' '+d+' ('+g.entities.length+')</div><div class="ent-list">';
+        g.entities.forEach(({id,e})=>{
+            let val=typeof e.state==='number'?(e.state+' '+e.unit):e.state;
+            html+='<div class="ent-row" onclick="toggleEntity(\''+id+'\')"><span class="ent-id">'+id+'</span><span class="ent-val">'+val+'</span></div>';
+        });
+        html+='</div></div>';
+    }
+    html+='</div>';
+    return html;
+}
+
+function dashCard(id){
+    let e=ENT[id];if(!e)return'';
+    let val=typeof e.state==='number'?(e.state+' '+(e.unit||'')):e.state;
+    let stateColor=e.state==='on'||e.state==='playing'?'var(--ac)':e.state==='off'||e.state==='paused'?'var(--muted)':'var(--text2)';
+    let html='<div class="dash-card" onclick="toggleEntity(\''+id+'\')">';
+    html+='<div class="dc-icon">'+e.icon+'</div>';
+    html+='<div class="dc-name">'+e.name+'</div>';
+    html+='<div class="dc-state" style="color:'+stateColor+'">'+val+'</div>';
+    if(e.domain==='light'&&e.state==='on'){
+        html+='<div style="width:100%;height:4px;border-radius:2px;margin-top:6px;background:'+e.color+'"></div>';
+    }
+    if(e.domain==='sensor'&&typeof e.state==='number'){
+        html+=miniGauge(e.state,e.unit);
+    }
+    html+='</div>';
+    return html;
+}
+
+function miniGauge(val,unit){
+    let pct=Math.min(100,Math.max(0,unit==='°C'?(val/50)*100:unit==='%'?val:unit==='hPa'?((val-950)/100)*100:(val/1000)*100));
+    let r=45,cx=50,cy=55,startAngle=Math.PI,endAngle=0;
+    let range=Math.PI;
+    let angle=startAngle-range*(pct/100);
+    let x1=cx+r*Math.cos(startAngle),y1=cy-r*Math.sin(startAngle);
+    let x2=cx+r*Math.cos(angle),y2=cy-r*Math.sin(angle);
+    let large=pct>50?1:0;
+    return'<svg viewBox="0 0 100 60" width="80" style="margin:4px auto;display:block"><path d="M'+x1+' '+y1+' A '+r+' '+r+' 0 0 1 '+(cx+r*Math.cos(endAngle))+' '+(cy-r*Math.sin(endAngle))+'" class="gauge-bg"/><path d="M'+x1+' '+y1+' A '+r+' '+r+' 0 '+large+' 1 '+x2+' '+y2+'" class="gauge-fill"/><text x="'+cx+'" y="'+cy+'" class="gauge-val">'+Math.round(val)+'</text><text x="'+cx+'" y="'+(cy+10)+'" class="gauge-unit">'+unit+'</text></svg>';
+}
+
+/* ============================================================
+   PAGE: BASE CAMP
+   ============================================================ */
+function pgBasecamp(){
+    let qDone=quests.filter(Boolean).length;
+    let pct=Math.round(qDone/8*100);
+    let h='<div class="page-title">🏠 '+t('basecamp')+'</div><div class="page-tag">'+t('welcome')+'</div>';
+
+    h+='<div class="card"><div class="card-title">📊 Progress</div>';
+    h+='<div class="card-sub">'+qDone+' / 8 '+t('quest')+' ('+pct+'%)</div>';
+    h+='<div class="prog-bar"><div class="prog-fill" style="width:'+pct+'%"></div></div></div>';
+
+    // Badges
+    h+='<div class="card"><div class="card-title">🏆 '+t('badges')+'</div><div class="badge-grid">';
+    const badges=[
+        {i:'🧠',n:'Brain Builder',q:0},{i:'🔌',n:'Connector',q:1},{i:'📊',n:'Dashboard',q:2},
+        {i:'⚡',n:'Automator',q:3},{i:'🎭',n:'Scene Dir.',q:4},{i:'📝',n:'YAML Master',q:5},
+        {i:'🗣️',n:'Voice Cmd',q:6},{i:'🏠',n:'Architect',q:7}
+    ];
+    badges.forEach(b=>{h+='<div class="badge'+(quests[b.q]?' earned':'')+'"><div class="badge-ico">'+b.i+'</div><div class="badge-nm">'+b.n+'</div></div>'});
+    h+='</div></div>';
+
+    // Quests
+    h+='<div class="card"><div class="card-title">🎯 '+t('quest')+'</div><div class="quest-grid">';
+    const ql=[
+        {i:'⚡',n:'Deploy HA',d:'Install Home Assistant',lv:'🟢'},{i:'🔌',n:'Connect',d:'Add first integration',lv:'🟢'},
+        {i:'📊',n:'Dashboard',d:'Build dashboard with 3 cards',lv:'🟢'},{i:'⚡',n:'Automate',d:'Create first automation',lv:'🟡'},
+        {i:'🎭',n:'Scene',d:'Save a scene with 2+ devices',lv:'🟡'},{i:'📝',n:'YAML',d:'Write YAML by hand',lv:'🟡'},
+        {i:'🗣️',n:'Voice',d:'Voice control a device',lv:'🔴'},{i:'🏠',n:'Smart Room',d:'Complete full smart room',lv:'🔴'}
+    ];
+    ql.forEach((q,i)=>{
+        h+='<div class="q-card'+(quests[i]?' done':'')+'" onclick="toggleQuest('+i+')">';
+        h+='<div class="q-icon">'+q.i+'</div><div class="q-info"><div class="q-name">'+q.lv+' '+q.n+'</div><div class="q-desc">'+q.d+'</div></div>';
+        h+='<div class="q-check">'+(quests[i]?'✓':'')+'</div></div>';
+    });
+    h+='</div></div>';
+
+    // Lab connections
+    h+='<div class="hint tip">💡 Already did the ESPHome or WLED labs? Your devices auto-discover in Home Assistant. The terminal skills from Linux Lab help with HA configuration. Everything connects.</div>';
+
+    // Quick dashboard preview
+    h+='<div class="card"><div class="card-title">📊 Live Entity Preview</div>';
+    h+='<div class="dash-grid">';
+    ['sensor.esp32_temperature','light.wled_strip','switch.smart_plug','binary_sensor.door','weather.home','sensor.microbit_tilt_x'].forEach(id=>{h+=dashCard(id)});
+    h+='</div></div>';
+    return h;
+}
+
+/* ============================================================
+   PAGE: SETUP
+   ============================================================ */
+function pgSetup(){
+    let h='<div class="page-title">🔧 '+t('setup')+'</div><div class="page-tag">Install Home Assistant on your Raspberry Pi 5 or any computer.</div>';
+
+    const tabs=[
+        {id:'pi5',icon:'🍓',name:'Raspberry Pi 5',steps:'<div class="steps"><div class="step">Download <b>Raspberry Pi Imager</b> from raspberrypi.com</div><div class="step">Choose OS → <b>Other specific-purpose OS</b> → <b>Home assistants</b> → <b>Home Assistant OS</b></div><div class="step">Select your SD card → click <b>Write</b></div><div class="step">Insert SD card into Pi 5 → plug in power (27W USB-C) + ethernet</div><div class="step">Wait 5 minutes → open <b>http://homeassistant.local:8123</b></div><div class="step">Create your account → done!</div></div>'},
+        {id:'docker',icon:'🐳',name:'Docker',steps:'<div class="steps"><div class="step">Install Docker on your machine</div><div class="step">Run the command below</div><div class="step">Open <b>http://localhost:8123</b></div></div>'+codeBlock('docker run -d --name homeassistant --restart=unless-stopped -v /PATH_TO_YOUR_CONFIG:/config -e TZ=Europe/Paris --network=host ghcr.io/home-assistant/home-assistant:stable')},
+        {id:'pc',icon:'💻',name:'Old PC/Laptop',steps:'<div class="steps"><div class="step">Download HA OS image for Generic x86-64 from home-assistant.io</div><div class="step">Flash to USB drive with Balena Etcher</div><div class="step">Boot PC from USB → install</div><div class="step">Open <b>http://homeassistant.local:8123</b></div></div>'},
+        {id:'vm',icon:'🖥️',name:'Virtual Machine',steps:'<div class="steps"><div class="step">Download HA OS .ova or .qcow2 from home-assistant.io</div><div class="step">Import into VirtualBox or Proxmox</div><div class="step">Set RAM to 2GB+, enable network bridge</div><div class="step">Start VM → open <b>http://homeassistant.local:8123</b></div></div>'}
+    ];
+
+    tabs.forEach(tab=>{
+        h+='<div class="card"><div class="card-title">'+tab.icon+' '+tab.name+'</div><div class="card-sub">'+tab.steps+'</div></div>';
+    });
+
+    h+='<div class="hint tip">🎉 First boot takes a few minutes. Be patient — HA is downloading updates.</div>';
+    h+='<div class="hint warn">⚠️ The web app simulator works without any setup. Real install is only needed to control actual devices.</div>';
+    return h;
+}
+
+/* ============================================================
+   PAGE: HOW SMART HOMES WORK
+   ============================================================ */
+function pgSmartHome(){
+    let h='<div class="page-title">📚 '+t('smarthome')+'</div><div class="page-tag">How devices talk to each other and why Home Assistant is the boss.</div>';
+
+    h+='<div class="card"><div class="card-title">🤖 What is IoT?</div><div class="card-sub">';
+    h+='<b>Internet of Things</b> — everyday objects that connect to WiFi and talk to each other. Your thermostat reports temperature. Your light bulb listens for commands. Your door sensor tells your phone when someone enters. They all share data over the network.';
+    h+='</div></div>';
+
+    h+='<div class="card"><div class="card-title">🧠 Sensors → Brain → Actuators</div><div class="card-sub">';
+    h+='Just like your body: <b>eyes and ears</b> (sensors) send data to your <b>brain</b> (Home Assistant) which tells your <b>muscles</b> (lights, fans, speakers) what to do.';
+    h+=codeBlock('Temperature sensor → "It\'s 32°C!"\n        ↓\nHome Assistant → "That\'s hot. Turn on the fan."\n        ↓\nSmart plug → Fan turns ON');
+    h+='</div></div>';
+
+    h+='<div class="card"><div class="card-title">📡 Protocols '+lvlBadge('explorer')+'</div><div class="card-sub">';
+    h+='Devices speak different languages. Here are the main ones:';
+    h+='<div style="overflow-x:auto;margin-top:8px"><table style="width:100%;font-size:.72rem;border-collapse:collapse">';
+    h+='<tr style="border-bottom:1px solid var(--card-b)"><th style="text-align:left;padding:6px">Protocol</th><th>Range</th><th>Speed</th><th>Power</th><th>Best for</th></tr>';
+    [['WiFi','50m','Fast','High','Cameras, ESP32'],['BLE','10m','Medium','Very low','micro:bit, sensors'],['Zigbee','30m+mesh','Medium','Low','Switches, bulbs'],['Z-Wave','30m+mesh','Slow','Low','Locks, sensors'],['Matter','Varies','Fast','Low','Everything (new)'],['MQTT','LAN','Fast','N/A','DIY IoT, ESP32']].forEach(r=>{
+        h+='<tr style="border-bottom:1px solid var(--card-b)"><td style="padding:6px;font-weight:700">'+r[0]+'</td><td style="text-align:center">'+r[1]+'</td><td style="text-align:center">'+r[2]+'</td><td style="text-align:center">'+r[3]+'</td><td>'+r[4]+'</td></tr>';
+    });
+    h+='</table></div></div></div>';
+
+    h+='<div class="card"><div class="card-title">🏠 Local vs ☁️ Cloud '+lvlBadge('explorer')+'</div><div class="card-sub">';
+    h+='<b>Home Assistant = local.</b> Runs on YOUR Pi, in YOUR house. No internet needed. No company spying on your data. Fast response.<br><br>';
+    h+='<b>Alexa/Google = cloud.</b> Your voice goes to a server thousands of miles away, gets processed, comes back. Needs internet. Company stores your data.';
+    h+='</div></div>';
+
+    h+='<div class="hint tip">💡 Home Assistant can control Alexa and Google devices too — you get the best of both worlds.</div>';
+    return h;
+}
+
+/* ============================================================
+   PAGE: HA ARCHITECTURE
+   ============================================================ */
+function pgArchitecture(){
+    let h='<div class="page-title">🧠 '+t('architecture')+'</div><div class="page-tag">Entities, states, services — the building blocks of HA.</div>';
+
+    h+='<div class="card"><div class="card-title">🔮 Entities</div><div class="card-sub">';
+    h+='Everything in HA is an <b>entity</b>. Each entity has an ID like <code>light.desk_lamp</code> or <code>sensor.esp32_temperature</code>.<br><br>';
+    h+='Format: <code>domain.object_name</code><br>';
+    h+='<b>domain</b> = what type (light, sensor, switch)<br><b>object_name</b> = which one (desk_lamp, esp32_temperature)';
+    h+='</div></div>';
+
+    h+='<div class="card"><div class="card-title">📊 Entity Explorer</div><div class="card-sub">Click any group to expand. Click an entity to toggle its state.</div>';
+    h+=entTree();
+    h+='</div>';
+
+    if(lvlVisible('explorer')){
+        h+='<div class="card"><div class="card-title">⚙️ Services '+lvlBadge('explorer')+'</div><div class="card-sub">';
+        h+='Services are <b>actions</b> you can perform. They\'re the verbs of HA.';
+        h+=codeBlock('light.turn_on        → Turn on a light\nlight.turn_off       → Turn off a light\nswitch.toggle        → Flip a switch\nnotify.mobile_app    → Send notification\nscene.turn_on        → Activate a scene\nmedia_player.play    → Play music');
+        h+='</div></div>';
+    }
+
+    if(lvlVisible('advanced')){
+        h+='<div class="card"><div class="card-title">📁 Config Files '+lvlBadge('advanced')+'</div><div class="card-sub">';
+        h+=codeBlock('/config/\n├── configuration.yaml    ← Main config\n├── automations.yaml     ← Your automations\n├── scenes.yaml          ← Your scenes\n├── scripts.yaml         ← Your scripts\n├── secrets.yaml         ← Passwords (never share!)\n└── custom_components/   ← Community integrations');
+        h+='</div></div>';
+    }
+    return h;
+}
+
+/* ============================================================
+   PAGE: YAML BASICS
+   ============================================================ */
+function pgYamlBasics(){
+    let h='<div class="page-title">📐 '+t('yamlbasics')+'</div><div class="page-tag">The language HA speaks. Learn it once, use it everywhere.</div>';
+
+    h+='<div class="card"><div class="card-title">📝 What is YAML?</div><div class="card-sub">';
+    h+='YAML is a simple config file format. It\'s how you tell Home Assistant what to do. It uses <b>indentation</b> (spaces, never tabs) to show structure.';
+    h+='</div></div>';
+
+    h+='<div class="card"><div class="card-title">🔑 Key-Value Pairs</div><div class="card-sub">Left = key, right = value, colon in between.';
+    h+=codeBlock('name: My Bedroom Light\nplatform: esphome\nbrightness: 80');
+    h+='</div></div>';
+
+    h+='<div class="card"><div class="card-title">📋 Lists</div><div class="card-sub">Dash + space = one item in a list.';
+    h+=codeBlock('effects:\n  - Strobe\n  - Color Loop\n  - Fire');
+    h+='</div></div>';
+
+    h+='<div class="card"><div class="card-title">📦 Nesting</div><div class="card-sub">Indent 2 spaces to nest. Parent → child.';
+    h+=codeBlock('automation:\n  trigger:\n    platform: state\n    entity_id: binary_sensor.door\n    to: "open"\n  action:\n    service: notify.mobile_app\n    data:\n      message: "Door opened!"');
+    h+='</div></div>';
+
+    h+='<div class="card"><div class="card-title">⚠️ Common Mistakes</div><div class="card-sub">';
+    h+='<b>Tab vs Space</b> — YAML only accepts spaces. One tab = broken file.<br>';
+    h+='<b>Missing colon</b> — <code>name My Light</code> should be <code>name: My Light</code><br>';
+    h+='<b>Wrong indent</b> — Every level = 2 spaces. Not 1, not 3, not 4.<br>';
+    h+='<b>Forgetting quotes</b> — Strings with <code>:</code> or <code>#</code> need quotes.';
+    h+='</div></div>';
+    return h;
+}
+
+/* ============================================================
+   PAGE: NETWORK TOOLS
+   ============================================================ */
+function pgNetTools(){
+    let h='<div class="page-title">🌐 '+t('nettools')+'</div><div class="page-tag">Find devices, check connections, debug your smart home network.</div>';
+
+    h+='<div class="card"><div class="card-title">🗺️ Network Map</div><div class="card-sub">Your home network — all devices connected to the router.</div>';
+    h+='<div class="net-map" id="netMap" style="height:260px">';
+    const nodes=[
+        {id:'router',icon:'📡',name:'Router',ip:'192.168.1.1',x:45,y:10},
+        {id:'pi',icon:'🍓',name:'Pi 5 (HA)',ip:'192.168.1.10',x:15,y:55},
+        {id:'esp',icon:'🔌',name:'ESP32',ip:'192.168.1.42',x:35,y:80},
+        {id:'wled',icon:'💡',name:'WLED',ip:'192.168.1.43',x:55,y:80},
+        {id:'phone',icon:'📱',name:'Phone',ip:'192.168.1.100',x:75,y:55},
+        {id:'micro',icon:'🎮',name:'micro:bit',ip:'via BLE',x:15,y:95}
+    ];
+    nodes.forEach(n=>{
+        h+='<div class="net-node" style="left:'+n.x+'%;top:'+n.y+'%"><div class="net-node-ico">'+n.icon+'</div><div class="net-node-name">'+n.name+'</div><div class="net-node-ip">'+n.ip+'</div></div>';
+    });
+    h+='</div></div>';
+
+    // Tools
+    const tools=[
+        {n:'ping',d:'Is this device alive?',ex:'ping homeassistant.local',lv:'newbie'},
+        {n:'hostname -I',d:'What is MY IP address?',ex:'hostname -I',lv:'newbie'},
+        {n:'arp -a',d:'Who else is on my network?',ex:'arp -a',lv:'newbie'},
+        {n:'avahi-browse',d:'Find all mDNS devices (.local)',ex:'avahi-browse -art',lv:'explorer'},
+        {n:'nmap',d:'Scan entire network',ex:'nmap 192.168.1.0/24',lv:'explorer'},
+        {n:'curl',d:'Talk to HA API',ex:'curl http://homeassistant.local:8123/api/',lv:'explorer'},
+        {n:'mosquitto_pub',d:'Send MQTT message',ex:'mosquitto_pub -t home/temp -m "23.4"',lv:'explorer'},
+        {n:'ss -tuln',d:'What ports are open?',ex:'ss -tuln',lv:'explorer'},
+        {n:'tcpdump',d:'Capture raw network packets',ex:'sudo tcpdump -i eth0',lv:'advanced'},
+        {n:'ipcalc',d:'Subnet calculator',ex:'ipcalc 192.168.1.0/24',lv:'advanced'}
+    ];
+
+    h+='<div class="card"><div class="card-title">🔧 Network Tools</div>';
+    tools.forEach(tool=>{
+        if(!lvlVisible(tool.lv))return;
+        h+='<div class="acc"><div class="acc-h" onclick="toggleAcc(this)"><span class="acc-arr">▶</span> <code style="color:var(--ac)">'+tool.n+'</code> — '+tool.d+' '+lvlBadge(tool.lv)+'</div>';
+        h+='<div class="acc-b">'+codeBlock(tool.ex)+'</div></div>';
+    });
+    h+='</div>';
+
+    // MQTT Playground
+    if(lvlVisible('explorer')){
+        h+='<div class="card"><div class="card-title">🦟 MQTT Playground '+lvlBadge('explorer')+'</div><div class="card-sub">Publish and subscribe to MQTT messages. Fake broker in the browser.</div>';
+        h+='<div class="mqtt-split"><div class="mqtt-panel"><div class="mqtt-title">📤 Publish</div>';
+        h+='<input class="mqtt-input" id="mqttTopic" placeholder="Topic: home/temperature" value="home/temperature">';
+        h+='<input class="mqtt-input" id="mqttMsg" placeholder="Message: 23.4" value="23.4">';
+        h+='<button class="btn sm primary" onclick="mqttPub()">Send</button>';
+        h+='</div><div class="mqtt-panel"><div class="mqtt-title">📥 Subscribe (home/#)</div>';
+        h+='<div class="mqtt-log" id="mqttLog">';
+        mqttLog.forEach(m=>{h+='<div class="mqtt-msg">'+esc(m.topic)+' → '+esc(m.msg)+'</div>'});
+        h+='</div></div></div></div>';
+    }
+
+    h+='<div class="hint tip">💡 From the Linux Lab? You already know <code>ping</code>, <code>curl</code>, <code>nmap</code>. Same tools — now you\'re finding smart home devices.</div>';
+    return h;
+}
+
+function mqttPub(){
+    let topic=document.getElementById('mqttTopic').value;
+    let msg=document.getElementById('mqttMsg').value;
+    if(!topic)return;
+    mqttLog.unshift({topic,msg});
+    if(mqttLog.length>20)mqttLog.pop();
+    let log=document.getElementById('mqttLog');
+    log.innerHTML='';
+    mqttLog.forEach(m=>{log.innerHTML+='<div class="mqtt-msg">'+esc(m.topic)+' → '+esc(m.msg)+'</div>'});
+}
+
+/* ============================================================
+   PAGE: INTEGRATIONS
+   ============================================================ */
+function pgIntegrations(){
+    let h='<div class="page-title">🔌 '+t('integrations')+'</div><div class="page-tag">Connect devices to HA. Most are auto-discovered.</div>';
+
+    const integs=[
+        {icon:'🔌',name:'ESPHome',desc:'Auto-discovers your ESP32 devices on the network',status:'discovered',lv:'newbie'},
+        {icon:'💡',name:'WLED',desc:'Auto-discovers WLED LED controllers',status:'discovered',lv:'newbie'},
+        {icon:'🦟',name:'MQTT',desc:'Message broker for IoT devices',status:'manual',lv:'explorer'},
+        {icon:'🐝',name:'Zigbee (ZHA)',desc:'Zigbee devices via USB coordinator',status:'manual',lv:'explorer'},
+        {icon:'📡',name:'Z-Wave',desc:'Z-Wave devices via USB stick',status:'manual',lv:'explorer'},
+        {icon:'☀️',name:'Sun',desc:'Track sunrise/sunset for automations',status:'auto',lv:'newbie'},
+        {icon:'🌤️',name:'Met Office',desc:'Weather forecast integration',status:'manual',lv:'newbie'},
+        {icon:'📱',name:'Mobile App',desc:'Phone as sensor + notifications',status:'manual',lv:'explorer'},
+        {icon:'🎵',name:'Spotify',desc:'Control Spotify playback',status:'manual',lv:'explorer'},
+        {icon:'🔊',name:'Google Cast',desc:'Cast to Chromecast/Google speakers',status:'manual',lv:'explorer'}
+    ];
+
+    h+='<div class="card"><div class="card-title">🔍 Integration Store (simulator)</div><div class="card-sub">Click "Add" to simulate installing an integration.</div>';
+    h+='<div class="dash-grid">';
+    integs.forEach(ig=>{
+        if(!lvlVisible(ig.lv))return;
+        let statusTxt=ig.status==='discovered'?'✅ Auto-discovered':ig.status==='auto'?'✅ Built-in':'➕ Manual setup';
+        let statusColor=ig.status==='discovered'||ig.status==='auto'?'color:#22c55e':'color:var(--muted)';
+        h+='<div class="dash-card"><div class="dc-icon">'+ig.icon+'</div><div class="dc-name">'+ig.name+'</div><div class="dc-state">'+ig.desc+'</div>';
+        h+='<div style="margin-top:6px;font-size:.65rem;font-weight:700;'+statusColor+'">'+statusTxt+'</div></div>';
+    });
+    h+='</div></div>';
+
+    h+='<div class="hint tip">💡 ESPHome and WLED devices show up automatically — just plug them into the same WiFi network as your Pi.</div>';
+    return h;
+}
+
+/* ============================================================
+   PAGE: DASHBOARD 101
+   ============================================================ */
+function pgDashboard(){
+    let h='<div class="page-title">📊 '+t('dashboard')+'</div><div class="page-tag">Build your control center. Drag cards onto a dashboard.</div>';
+
+    h+='<div class="card"><div class="card-title">📊 Dashboard Simulator</div><div class="card-sub">This is a live dashboard — click any card to toggle its entity. States are shared across all pages.</div>';
+    h+='<div class="dash-grid">';
+    for(let id in ENT){h+=dashCard(id)}
+    h+='</div></div>';
+
+    h+='<div class="card"><div class="card-title">🎴 Card Types '+lvlBadge('newbie')+'</div><div class="card-sub">';
+    h+='<b>Button</b> — tap to toggle on/off<br><b>Entity</b> — shows name + state<br><b>Gauge</b> — animated arc for numbers (temp, humidity)<br>';
+    if(lvlVisible('explorer'))h+='<b>Light</b> — color wheel + brightness<br><b>Weather</b> — forecast with icons<br><b>Sensor</b> — number + sparkline<br><b>History Graph</b> — chart over time<br>';
+    if(lvlVisible('advanced'))h+='<b>Thermostat</b> — circular dial<br><b>Media Player</b> — play/pause/volume<br><b>Markdown</b> — rich text<br><b>Picture Elements</b> — image with overlays<br>';
+    h+='</div></div>';
+
+    if(lvlVisible('explorer')){
+        h+='<div class="card"><div class="card-title">📝 Dashboard YAML '+lvlBadge('explorer')+'</div><div class="card-sub">Every dashboard card is YAML. Here\'s a simple button card:';
+        h+=codeBlock('type: button\nentity: light.wled_strip\nname: LED Strip\nicon: mdi:led-strip\ntap_action:\n  action: toggle\nshow_state: true');
+        h+='</div></div>';
+    }
+    return h;
+}
+
+/* ============================================================
+   PAGE: CARDS CATALOG
+   ============================================================ */
+function pgCards(){
+    let h='<div class="page-title">🎴 '+t('cards')+'</div><div class="page-tag">Every card type you can put on a dashboard.</div>';
+
+    const cards=[
+        {name:'Button',icon:'🔘',desc:'Tap to toggle. Shows icon + state.',yaml:'type: button\nentity: switch.smart_plug\nname: Smart Plug\nshow_state: true',lv:'newbie',ent:'switch.smart_plug'},
+        {name:'Entity',icon:'📋',desc:'Name + state + icon. Simple display.',yaml:'type: entity\nentity: sensor.esp32_temperature',lv:'newbie',ent:'sensor.esp32_temperature'},
+        {name:'Gauge',icon:'🎯',desc:'Animated arc for numbers.',yaml:'type: gauge\nentity: sensor.esp32_temperature\nmin: 0\nmax: 50\nseverity:\n  green: 0\n  yellow: 25\n  red: 35',lv:'newbie',ent:'sensor.esp32_temperature'},
+        {name:'Light',icon:'💡',desc:'Color wheel + brightness slider.',yaml:'type: light\nentity: light.wled_strip\nfeatures:\n  - type: brightness\n  - type: color-temp',lv:'explorer',ent:'light.wled_strip'},
+        {name:'Weather',icon:'🌤️',desc:'Forecast with temperature and icons.',yaml:'type: weather-forecast\nentity: weather.home\nshow_forecast: true',lv:'explorer',ent:'weather.home'},
+        {name:'Sensor',icon:'📊',desc:'Number + unit + sparkline graph.',yaml:'type: sensor\nentity: sensor.esp32_humidity\ngraph: line\nhours_to_show: 24',lv:'explorer',ent:'sensor.esp32_humidity'},
+        {name:'History Graph',icon:'📈',desc:'Line chart over time.',yaml:'type: history-graph\nentities:\n  - sensor.esp32_temperature\n  - sensor.esp32_humidity\nhours_to_show: 24',lv:'explorer'},
+        {name:'Thermostat',icon:'🌡️',desc:'Circular dial. Drag to set temp.',yaml:'type: thermostat\nentity: climate.living_room\nfeatures:\n  - type: climate-hvac-modes',lv:'advanced'},
+        {name:'Media Player',icon:'🎵',desc:'Play/pause/skip + volume.',yaml:'type: media-control\nentity: media_player.speaker',lv:'advanced',ent:'media_player.speaker'},
+        {name:'Markdown',icon:'📝',desc:'Rich text with templates.',yaml:'type: markdown\ncontent: |\n  ## Hello!\n  Temperature is {{ states(\"sensor.esp32_temperature\") }}°C',lv:'advanced'}
+    ];
+
+    cards.forEach(c=>{
+        if(!lvlVisible(c.lv))return;
+        h+='<div class="card"><div class="card-title">'+c.icon+' '+c.name+' '+lvlBadge(c.lv)+'</div>';
+        h+='<div class="card-sub">'+c.desc+'</div>';
+        if(c.ent){h+='<div class="dash-grid" style="margin:8px 0">'+dashCard(c.ent)+'</div>'}
+        h+=codeBlock(c.yaml);
+        h+='</div>';
+    });
+    return h;
+}
+
+/* ============================================================
+   PAGE: AUTOMATIONS
+   ============================================================ */
+function pgAutomations(){
+    let h='<div class="page-title">⚡ '+t('automations')+'</div><div class="page-tag">When something happens → do something. The power of HA.</div>';
+
+    // Blueprint recipes
+    h+='<div class="card"><div class="card-title">📋 Blueprint Recipes '+lvlBadge('newbie')+'</div><div class="card-sub">Ready-made automations. Copy the YAML into your HA.</div>';
+    const recipes=[
+        {name:'🌡️ Temperature Alert',desc:'Notify when ESP32 reads > 30°C',yaml:'automation:\n  trigger:\n    platform: numeric_state\n    entity_id: sensor.esp32_temperature\n    above: 30\n  action:\n    service: notify.mobile_app\n    data:\n      message: "Temperature is {{ states(\'sensor.esp32_temperature\') }}°C!"'},
+        {name:'🚪 Door Open Alert',desc:'Notification when door opens',yaml:'automation:\n  trigger:\n    platform: state\n    entity_id: binary_sensor.door\n    to: "open"\n  action:\n    service: notify.mobile_app\n    data:\n      message: "Front door opened!"'},
+        {name:'🌅 Sunrise LEDs',desc:'Gradually turn on WLED at 7am',yaml:'automation:\n  trigger:\n    platform: time\n    at: "07:00:00"\n  action:\n    service: light.turn_on\n    target:\n      entity_id: light.wled_strip\n    data:\n      brightness: 255\n      color_temp: 370\n      transition: 300'},
+        {name:'🎮 Shake = Party',desc:'micro:bit shake triggers WLED party',yaml:'automation:\n  trigger:\n    platform: state\n    entity_id: sensor.microbit_gesture\n    to: "shake"\n  action:\n    service: light.turn_on\n    target:\n      entity_id: light.wled_strip\n    data:\n      effect: "Party"\n      brightness: 255'},
+        {name:'🌙 Bedtime',desc:'Everything off at 10pm',yaml:'automation:\n  trigger:\n    platform: time\n    at: "22:00:00"\n  action:\n    - service: light.turn_off\n      target:\n        entity_id: all\n    - service: switch.turn_off\n      target:\n        entity_id: switch.fan'}
+    ];
+    recipes.forEach(r=>{
+        h+='<div class="acc"><div class="acc-h" onclick="toggleAcc(this)"><span class="acc-arr">▶</span> '+r.name+' — '+r.desc+'</div>';
+        h+='<div class="acc-b">'+codeBlock(r.yaml)+'</div></div>';
+    });
+    h+='</div>';
+
+    // Visual builder
+    if(lvlVisible('explorer')){
+        h+='<div class="card"><div class="card-title">🔧 Automation Builder '+lvlBadge('explorer')+'</div><div class="card-sub">Pick a trigger, optional condition, and action. YAML generates below.</div>';
+        h+='<div class="auto-flow">';
+        // Trigger column
+        h+='<div class="auto-col"><div class="auto-col-title">🎯 Trigger</div>';
+        ['State change','Time','Sun (sunrise/sunset)','Numeric state','Device'].forEach((o,i)=>{
+            h+='<div class="auto-option'+(i===0?' selected':'')+'" onclick="selectAutoOption(this)">'+o+'</div>';
+        });
+        h+='<div class="auto-config"><label>Entity:<select><option>sensor.esp32_temperature</option><option>binary_sensor.door</option><option>light.wled_strip</option><option>switch.fan</option></select></label></div>';
+        h+='</div>';
+        h+='<div class="auto-arrow">→</div>';
+        // Condition column
+        h+='<div class="auto-col"><div class="auto-col-title">🔒 Condition (optional)</div>';
+        ['None','Time range','State check','Numeric check'].forEach((o,i)=>{
+            h+='<div class="auto-option'+(i===0?' selected':'')+'" onclick="selectAutoOption(this)">'+o+'</div>';
+        });
+        h+='</div>';
+        h+='<div class="auto-arrow">→</div>';
+        // Action column
+        h+='<div class="auto-col"><div class="auto-col-title">⚡ Action</div>';
+        ['Toggle entity','Turn on','Turn off','Send notification','Activate scene','Delay'].forEach((o,i)=>{
+            h+='<div class="auto-option'+(i===0?' selected':'')+'" onclick="selectAutoOption(this)">'+o+'</div>';
+        });
+        h+='<div class="auto-config"><label>Target:<select><option>light.wled_strip</option><option>switch.fan</option><option>switch.smart_plug</option><option>all</option></select></label></div>';
+        h+='</div>';
+        h+='</div></div>';
+    }
+    return h;
+}
+
+function selectAutoOption(el){
+    el.parentElement.querySelectorAll('.auto-option').forEach(o=>o.classList.remove('selected'));
+    el.classList.add('selected');
+}
+
+/* ============================================================
+   PAGE: YAML LAB
+   ============================================================ */
+function pgYamlLab(){
+    let h='<div class="page-title">📝 '+t('yamllab')+'</div><div class="page-tag">Write YAML, see it validate live. Three modes by level.</div>';
+
+    const templates=[
+        {name:'Button Card',yaml:'type: button\nentity: light.wled_strip\nname: LED Strip\nshow_state: true'},
+        {name:'Temperature Gauge',yaml:'type: gauge\nentity: sensor.esp32_temperature\nmin: 0\nmax: 50\nname: Room Temp'},
+        {name:'Simple Automation',yaml:'automation:\n  alias: Door Alert\n  trigger:\n    platform: state\n    entity_id: binary_sensor.door\n    to: "open"\n  action:\n    service: notify.mobile_app\n    data:\n      message: "Door opened!"'},
+        {name:'Scene: Movie Night',yaml:'scene:\n  name: Movie Night\n  entities:\n    light.ceiling:\n      state: "on"\n      brightness: 30\n    light.wled_strip:\n      state: "on"\n      brightness: 60\n      color_name: blue\n    switch.fan:\n      state: "off"'}
+    ];
+
+    h+='<div class="card"><div class="card-title">📋 Templates</div><div style="display:flex;gap:4px;flex-wrap:wrap;margin:6px 0">';
+    templates.forEach((t,i)=>{
+        h+='<button class="btn sm" onclick="loadYamlTemplate('+i+')">'+t.name+'</button>';
+    });
+    h+='</div></div>';
+
+    h+='<div class="card"><div class="card-title">✏️ Editor</div>';
+    h+='<div class="yaml-split">';
+    h+='<div class="yaml-edit"><textarea id="yamlEditor" oninput="validateYaml()" placeholder="Type YAML here...">'+esc(templates[0].yaml)+'</textarea><div id="yamlStatus" class="yaml-ok">✅ Valid YAML</div></div>';
+    h+='<div class="yaml-preview" id="yamlPreview"><pre>'+esc(templates[0].yaml)+'</pre></div>';
+    h+='</div></div>';
+
+    // Store templates globally
+    h+='<script>window._yamlTemplates='+JSON.stringify(templates.map(t=>t.yaml))+'<\/script>';
+    return h;
+}
+
+function loadYamlTemplate(i){
+    let templates=window._yamlTemplates;
+    if(!templates||!templates[i])return;
+    let ed=document.getElementById('yamlEditor');
+    if(ed){ed.value=templates[i];validateYaml()}
+}
+
+function validateYaml(){
+    let ed=document.getElementById('yamlEditor');
+    let status=document.getElementById('yamlStatus');
+    let preview=document.getElementById('yamlPreview');
+    if(!ed||!status||!preview)return;
+    let val=ed.value;
+    // Basic YAML validation
+    let errors=[];
+    let lines=val.split('\n');
+    lines.forEach((line,i)=>{
+        if(line.includes('\t'))errors.push('Line '+(i+1)+': Tab detected — use spaces only');
+        if(line.trim()&&!line.trim().startsWith('#')&&!line.trim().startsWith('-')&&line.trim().includes(':')&&line.match(/^\s*\S+[^:]+$/)){}
+    });
+    if(errors.length){
+        ed.classList.remove('valid');ed.classList.add('invalid');
+        status.className='yaml-err';status.textContent='❌ '+errors[0];
+    }else{
+        ed.classList.remove('invalid');ed.classList.add('valid');
+        status.className='yaml-ok';status.textContent='✅ Valid YAML';
+    }
+    preview.innerHTML='<pre>'+esc(val)+'</pre>';
+}
+
+/* ============================================================
+   PAGE: SCENES
+   ============================================================ */
+function pgScenes(){
+    let h='<div class="page-title">🎭 '+t('scenes')+'</div><div class="page-tag">Save device states. Recall them with one tap.</div>';
+
+    h+='<div class="card"><div class="card-title">🎬 What are scenes?</div><div class="card-sub">';
+    h+='A scene saves the state of multiple devices. "Movie Night" might mean: ceiling light at 20%, WLED strip blue at 60%, fan off. One tap to activate.';
+    h+='</div></div>';
+
+    const scenes=[
+        {name:'🎬 Movie Night',desc:'Dim lights, blue LEDs, fan off',yaml:'scene:\n  name: Movie Night\n  entities:\n    light.ceiling:\n      state: "on"\n      brightness: 50\n    light.wled_strip:\n      state: "on"\n      brightness: 150\n      rgb_color: [0, 100, 255]\n    switch.fan:\n      state: "off"'},
+        {name:'📖 Study Mode',desc:'Desk lamp bright, ceiling off',yaml:'scene:\n  name: Study Mode\n  entities:\n    light.desk_lamp:\n      state: "on"\n      brightness: 255\n    light.ceiling:\n      state: "off"\n    light.wled_strip:\n      state: "off"'},
+        {name:'🌙 Bedtime',desc:'Everything off except dim night light',yaml:'scene:\n  name: Bedtime\n  entities:\n    light.ceiling:\n      state: "off"\n    light.wled_strip:\n      state: "on"\n      brightness: 20\n      rgb_color: [255, 150, 50]\n    switch.fan:\n      state: "off"\n    switch.heater:\n      state: "off"'}
+    ];
+
+    scenes.forEach(s=>{
+        h+='<div class="acc"><div class="acc-h" onclick="toggleAcc(this)"><span class="acc-arr">▶</span> '+s.name+' — '+s.desc+'</div>';
+        h+='<div class="acc-b">'+codeBlock(s.yaml)+'</div></div>';
+    });
+    return h;
+}
+
+/* ============================================================
+   PAGE: SCRIPTS
+   ============================================================ */
+function pgScripts(){
+    let h='<div class="page-title">📜 '+t('scripts')+'</div><div class="page-tag">Sequences of actions. Like automations but manually triggered.</div>';
+
+    h+='<div class="card"><div class="card-title">📜 What are scripts?</div><div class="card-sub">';
+    h+='Scripts are step-by-step action lists. Unlike automations, they don\'t have triggers — you run them manually or from other automations.';
+    h+='</div></div>';
+
+    h+='<div class="card"><div class="card-title">🌅 Example: Morning Routine</div>';
+    h+=codeBlock('script:\n  morning_routine:\n    alias: Morning Routine\n    sequence:\n      - service: light.turn_on\n        target:\n          entity_id: light.ceiling\n        data:\n          brightness: 200\n          color_temp: 370\n      - delay:\n          seconds: 5\n      - service: light.turn_on\n        target:\n          entity_id: light.wled_strip\n        data:\n          brightness: 150\n          effect: "Sunrise"\n      - service: media_player.play_media\n        target:\n          entity_id: media_player.speaker\n        data:\n          media_content_id: "morning_playlist"\n          media_content_type: "playlist"');
+    h+='</div>';
+    return h;
+}
+
+/* ============================================================
+   PAGE: REMOTE & VOICE
+   ============================================================ */
+function pgRemoteVoice(){
+    let h='<div class="page-title">📱 '+t('remotevoice')+'</div><div class="page-tag">Control from phone, tablet, or voice. Anywhere.</div>';
+
+    h+='<div class="card"><div class="card-title">📱 Mobile App</div><div class="card-sub">';
+    h+='Install the Home Assistant app (Android or iOS). It gives you:<br>';
+    h+='• 📊 Dashboard on your phone<br>• 🔔 Push notifications<br>• 📍 Location tracking (for "when I get home" automations)<br>• 📡 Phone sensors (battery, WiFi, steps)';
+    h+='</div></div>';
+
+    h+='<div class="card"><div class="card-title">🗣️ Voice Assistants</div><div class="card-sub">';
+    h+='<b>Google Home</b> — "Hey Google, turn on the LED strip"<br>';
+    h+='<b>Alexa</b> — "Alexa, set bedroom to movie night"<br>';
+    h+='<b>Assist (local!)</b> — HA\'s own voice assistant. No cloud. Add Piper + Whisper add-ons for fully local voice control.';
+    h+='</div></div>';
+
+    if(lvlVisible('explorer')){
+        h+='<div class="card"><div class="card-title">🔊 Voice Commands '+lvlBadge('explorer')+'</div><div class="card-sub">';
+        h+='<code>"Turn on the desk lamp"</code><br><code>"Set WLED strip to blue"</code><br><code>"What\'s the temperature?"</code><br><code>"Activate movie night"</code><br><code>"Turn off everything"</code>';
+        h+='</div></div>';
+    }
+    return h;
+}
+
+/* ============================================================
+   PAGE: ADD-ONS
+   ============================================================ */
+function pgAddons(){
+    let h='<div class="page-title">🧩 '+t('addons')+'</div><div class="page-tag">Extend HA with one-click installs.</div>';
+
+    const addons=[
+        {icon:'📝',name:'File Editor',desc:'Edit config files in browser',lv:'newbie',status:'Essential'},
+        {icon:'🖥️',name:'Terminal & SSH',desc:'Command line access to HA',lv:'newbie',status:'Essential'},
+        {icon:'🦟',name:'Mosquitto MQTT',desc:'MQTT message broker',lv:'explorer',status:'Recommended'},
+        {icon:'🔴',name:'Node-RED',desc:'Visual flow programming',lv:'advanced',status:'Power tool'},
+        {icon:'📁',name:'Samba Share',desc:'Access HA files from PC',lv:'explorer',status:'Handy'},
+        {icon:'🦆',name:'DuckDNS',desc:'Free domain for remote access',lv:'explorer',status:'Remote access'},
+        {icon:'🎵',name:'Music Assistant',desc:'Play music on all speakers',lv:'explorer',status:'Fun'},
+        {icon:'🗣️',name:'Piper',desc:'Local text-to-speech (no cloud)',lv:'explorer',status:'Local voice'},
+        {icon:'👂',name:'Whisper',desc:'Local speech-to-text (no cloud)',lv:'explorer',status:'Local voice'},
+        {icon:'📊',name:'Grafana',desc:'Advanced data visualization',lv:'advanced',status:'Pro analytics'}
+    ];
+
+    h+='<div class="dash-grid">';
+    addons.forEach(a=>{
+        if(!lvlVisible(a.lv))return;
+        h+='<div class="dash-card"><div class="dc-icon">'+a.icon+'</div><div class="dc-name">'+a.name+'</div><div class="dc-state">'+a.desc+'</div>';
+        h+='<div style="margin-top:6px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:.6rem;color:var(--muted)">'+a.status+'</span>';
+        h+='<button class="btn sm" onclick="this.textContent=\'Running ✅\';this.disabled=true">Install</button></div></div>';
+    });
+    h+='</div>';
+    return h;
+}
+
+/* ============================================================
+   PAGE: ESPHOME BRIDGE
+   ============================================================ */
+function pgEsphome(){
+    let h='<div class="page-title">🌡️ '+t('esphome')+'</div><div class="page-tag">Your ESP32 sensors → HA entities → dashboards → automations.</div>';
+
+    h+='<div class="card"><div class="card-title">🔌 How it works</div><div class="card-sub">';
+    h+=codeBlock('ESP32 (ESPHome)          Home Assistant\n┌──────────────┐         ┌──────────────┐\n│ Temperature  ├────────►│ sensor.      │\n│ Humidity     │  WiFi   │  esp32_      │\n│ Light level  │  auto   │  temperature │\n│ Button       │  found  │              │\n└──────────────┘         └──────────────┘');
+    h+='</div></div>';
+
+    h+='<div class="card"><div class="card-title">📊 Your ESP32 in the Dashboard</div>';
+    h+='<div class="dash-grid">';
+    ['sensor.esp32_temperature','sensor.esp32_humidity','sensor.esp32_light_level','sensor.esp32_pressure'].forEach(id=>{h+=dashCard(id)});
+    h+='</div></div>';
+
+    h+='<div class="card"><div class="card-title">⚡ Automate with it</div>';
+    h+=codeBlock('automation:\n  alias: "Too Hot Alert"\n  trigger:\n    platform: numeric_state\n    entity_id: sensor.esp32_temperature\n    above: 30\n  action:\n    - service: switch.turn_on\n      target:\n        entity_id: switch.fan\n    - service: notify.mobile_app\n      data:\n        message: "It\'s {{ states(\'sensor.esp32_temperature\') }}°C!"');
+    h+='</div>';
+
+    h+='<div class="hint tip">💡 Did the ESPHome Kids Lab? Your device auto-appears in HA. Go to Settings → Devices → ESPHome → your device.</div>';
+    return h;
+}
+
+/* ============================================================
+   PAGE: WLED BRIDGE
+   ============================================================ */
+function pgWled(){
+    let h='<div class="page-title">💡 '+t('wled')+'</div><div class="page-tag">Your LED strips → HA light entities → scenes → automations.</div>';
+
+    h+='<div class="card"><div class="card-title">🔌 How it works</div><div class="card-sub">';
+    h+=codeBlock('WLED Controller          Home Assistant\n┌──────────────┐         ┌──────────────┐\n│ LED Strip    ├────────►│ light.       │\n│ 60 LEDs      │  WiFi   │  wled_strip  │\n│ Effects      │  auto   │              │\n│ Colors       │  found  │ brightness   │\n│ Segments     │         │ color        │\n└──────────────┘         │ effect       │\n                         └──────────────┘');
+    h+='</div></div>';
+
+    h+='<div class="card"><div class="card-title">📊 WLED in the Dashboard</div>';
+    h+='<div class="dash-grid">'+dashCard('light.wled_strip')+'</div></div>';
+
+    h+='<div class="card"><div class="card-title">🎬 Automate LED Scenes</div>';
+    h+=codeBlock('automation:\n  alias: "Sunset LEDs"\n  trigger:\n    platform: sun\n    event: sunset\n  action:\n    service: light.turn_on\n    target:\n      entity_id: light.wled_strip\n    data:\n      brightness: 180\n      rgb_color: [255, 100, 20]\n      effect: "Fire Flicker"');
+    h+='</div>';
+    return h;
+}
+
+/* ============================================================
+   PAGE: MICRO:BIT BRIDGE
+   ============================================================ */
+function pgMicrobit(){
+    let h='<div class="page-title">🎮 '+t('microbit')+'</div><div class="page-tag">Gestures → automations. Your micro:bit becomes a magic wand.</div>';
+
+    h+='<div class="card"><div class="card-title">🔌 How it works</div><div class="card-sub">';
+    h+=codeBlock('micro:bit              ESP32 (BLE bridge)     Home Assistant\n┌──────────┐    BLE    ┌──────────┐   WiFi   ┌──────────────┐\n│ Temp     ├──────────►│ ESPHome  ├─────────►│ sensor.      │\n│ Tilt     │  UART     │ BLE proxy│          │  microbit_   │\n│ Buttons  │           │          │          │  gesture     │\n│ Shake    │           └──────────┘          │  tilt_x      │\n│ Compass  │                                 │  temperature │\n└──────────┘                                 └──────────────┘');
+    h+='</div></div>';
+
+    h+='<div class="card"><div class="card-title">🎮 Gesture Commands</div><div class="card-sub">';
+    h+='<div style="overflow-x:auto"><table style="width:100%;font-size:.72rem;border-collapse:collapse">';
+    h+='<tr style="border-bottom:1px solid var(--card-b)"><th style="text-align:left;padding:6px">Gesture</th><th>HA Action</th></tr>';
+    [['Tilt left','Previous scene'],['Tilt right','Next scene'],['Tilt forward','Brightness up'],['Tilt back','Brightness down'],['Press A','Movie Night scene'],['Press B','Study Mode scene'],['Shake','Party mode (WLED effects)'],['A + B','Everything off'],['Freefall (toss)','Random scene']].forEach(r=>{
+        h+='<tr style="border-bottom:1px solid var(--card-b)"><td style="padding:6px">'+r[0]+'</td><td>'+r[1]+'</td></tr>';
+    });
+    h+='</table></div></div></div>';
+
+    h+='<div class="card"><div class="card-title">📊 micro:bit in Dashboard</div>';
+    h+='<div class="dash-grid">';
+    ['sensor.microbit_temperature','sensor.microbit_light_level','sensor.microbit_compass','sensor.microbit_tilt_x'].forEach(id=>{h+=dashCard(id)});
+    h+='</div></div>';
+
+    h+='<div class="card"><div class="card-title">⚡ Shake = Party Mode</div>';
+    h+=codeBlock('automation:\n  alias: "Shake Party"\n  trigger:\n    platform: state\n    entity_id: sensor.microbit_gesture\n    to: "shake"\n  action:\n    service: light.turn_on\n    target:\n      entity_id: light.wled_strip\n    data:\n      effect: "Party"\n      brightness: 255');
+    h+='</div>';
+    return h;
+}
+
+/* ============================================================
+   PAGE: PROJECTS
+   ============================================================ */
+function pgProjects(){
+    let h='<div class="page-title">🏗️ '+t('projects')+'</div><div class="page-tag">6 complete builds. From simple sensor to full smart room.</div>';
+
+    const proj=[
+        {icon:'🌡️',name:'Climate Monitor',lv:'newbie',devices:'ESP32 temp sensor',desc:'Gauge card on dashboard + automation that sends notification when temperature exceeds 30°C.',yaml:'# Dashboard card\ntype: gauge\nentity: sensor.esp32_temperature\nmin: 0\nmax: 50\nname: Room Temperature\n\n# Automation\nautomation:\n  trigger:\n    platform: numeric_state\n    entity_id: sensor.esp32_temperature\n    above: 30\n  action:\n    service: notify.mobile_app\n    data:\n      message: "Too hot! {{ states(\'sensor.esp32_temperature\') }}°C"'},
+        {icon:'💡',name:'Smart Desk',lv:'newbie',devices:'WLED + ESP32 button',desc:'Physical button toggles WLED scenes. Dashboard has color picker and brightness control.',yaml:'# Button automation\nautomation:\n  trigger:\n    platform: state\n    entity_id: binary_sensor.esp32_button\n    to: "on"\n  action:\n    service: light.toggle\n    target:\n      entity_id: light.wled_strip'},
+        {icon:'🚪',name:'Door Alert',lv:'explorer',devices:'ESP32 reed switch',desc:'Phone notification when door opens. Only triggers at night (10pm-7am). History log shows all events.',yaml:'automation:\n  trigger:\n    platform: state\n    entity_id: binary_sensor.door\n    to: "open"\n  condition:\n    condition: time\n    after: "22:00:00"\n    before: "07:00:00"\n  action:\n    service: notify.mobile_app\n    data:\n      title: "Security Alert"\n      message: "Front door opened at {{ now().strftime(\'%H:%M\') }}"'},
+        {icon:'🌅',name:'Sunrise Sim',lv:'explorer',devices:'WLED strip',desc:'WLED gradually turns on warm white at 7am over 5 minutes. Bedtime scene dims to amber then off.',yaml:'automation:\n  alias: Sunrise Simulation\n  trigger:\n    platform: time\n    at: "07:00:00"\n  action:\n    service: light.turn_on\n    target:\n      entity_id: light.wled_strip\n    data:\n      brightness: 255\n      color_temp: 370\n      transition: 300'},
+        {icon:'🎮',name:'micro:bit Commander',lv:'explorer',devices:'micro:bit + ESP32 + WLED',desc:'Gestures control your room. Tilt for brightness, shake for party, buttons for scenes.',yaml:'# Multiple automations for each gesture\n# See micro:bit Bridge page for full YAML'},
+        {icon:'🏠',name:'Full Smart Room',lv:'advanced',devices:'All devices',desc:'Everything connected. Sensors, LEDs, buttons, automations, scenes, scripts, voice control, dashboard. The ultimate project.'}
+    ];
+
+    proj.forEach(p=>{
+        if(!lvlVisible(p.lv))return;
+        h+='<div class="card"><div class="card-title">'+p.icon+' '+p.name+' '+lvlBadge(p.lv)+'</div>';
+        h+='<div class="card-sub"><b>Devices:</b> '+p.devices+'<br>'+p.desc+'</div>';
+        if(p.yaml)h+=codeBlock(p.yaml);
+        h+='</div>';
+    });
+    return h;
+}
+
+/* ============================================================
+   PAGE: SAFETY
+   ============================================================ */
+function pgSafety(){
+    let h='<div class="page-title">🛡️ '+t('safety')+'</div><div class="page-tag">Protect your smart home. Security matters.</div>';
+
+    h+='<div class="card"><div class="card-title">🔑 Passwords '+lvlBadge('newbie')+'</div><div class="card-sub">';
+    h+='<b>Change the default password immediately.</b> Use a strong password with letters, numbers, and symbols. Never reuse passwords from other sites.';
+    h+='</div></div>';
+
+    h+='<div class="card"><div class="card-title">🌐 Don\'t Expose to Internet '+lvlBadge('newbie')+'</div><div class="card-sub">';
+    h+='Never open port 8123 to the internet. If someone finds it, they can control your entire home. Use <b>Nabu Casa</b> ($6.50/month) or a <b>VPN</b> for safe remote access.';
+    h+='</div></div>';
+
+    h+='<div class="hint danger">🚨 What happens if someone hacks your smart home? Lights flashing at 3am. Door locks opening. Heater maxed out. Speaker blasting music. Take security seriously.</div>';
+
+    if(lvlVisible('explorer')){
+        h+='<div class="card"><div class="card-title">🔐 HTTPS '+lvlBadge('explorer')+'</div><div class="card-sub">';
+        h+='HTTP sends data as plain text — anyone on your network can read it. HTTPS encrypts everything. Set up HTTPS with a certificate or use Nabu Casa (automatic HTTPS).';
+        h+='</div></div>';
+    }
+
+    if(lvlVisible('advanced')){
+        h+='<div class="card"><div class="card-title">🌐 IoT VLAN '+lvlBadge('advanced')+'</div><div class="card-sub">';
+        h+='Put IoT devices on a separate network (VLAN). If a smart bulb gets hacked, it can\'t reach your laptop or phone. Only HA can talk to both networks.';
+        h+=codeBlock('Main Network (VLAN 1)     IoT Network (VLAN 10)\n┌──────────────┐         ┌──────────────┐\n│ Laptop       │         │ ESP32        │\n│ Phone        │◄───────►│ WLED         │\n│ Pi 5 (HA)    │   HA    │ Smart plugs  │\n└──────────────┘ bridge  └──────────────┘');
+        h+='</div></div>';
+    }
+    return h;
+}
+
+/* ============================================================
+   PAGE: TROUBLESHOOTING
+   ============================================================ */
+function pgTroubleshoot(){
+    let h='<div class="page-title">🛠️ '+t('troubleshoot')+'</div><div class="page-tag">Common problems and how to fix them.</div>';
+
+    const problems=[
+        {q:'HA won\'t boot',a:'Reflash SD card with Pi Imager. If you have a backup, restore it after first boot.'},
+        {q:'Can\'t find my ESP32/WLED',a:'Make sure they\'re on the same WiFi network as your Pi. Check router\'s device list. Try <code>ping esp32.local</code>.'},
+        {q:'Automation doesn\'t fire',a:'Check Settings → Automations → your automation → trace. Look at trigger, condition, and action logs. Most common: wrong entity ID or condition blocks it.'},
+        {q:'Dashboard shows "unavailable"',a:'The device is offline or the entity ID changed. Check Settings → Devices → find your device. Restart integration if needed.'},
+        {q:'YAML error after editing',a:'Check indentation (2 spaces, no tabs). Check colons after keys. Check quotes around strings with special characters. Use the YAML Lab page to validate.'},
+        {q:'Everything is broken',a:'Restore from backup: Settings → System → Backups → pick latest → Restore. If no backup: reflash SD card and start fresh.'}
+    ];
+
+    problems.forEach(p=>{
+        h+='<div class="acc"><div class="acc-h" onclick="toggleAcc(this)"><span class="acc-arr">▶</span> ❌ '+p.q+'</div>';
+        h+='<div class="acc-b">'+p.a+'</div></div>';
+    });
+
+    h+='<div class="card"><div class="card-title">💾 Backups</div><div class="card-sub">';
+    h+='<b>Always backup before experimenting.</b><br>Settings → System → Backups → Create Backup.<br>Schedule automatic daily backups with the Google Drive or Samba add-on.';
+    h+='</div></div>';
+
+    if(lvlVisible('explorer')){
+        h+='<div class="card"><div class="card-title">🔧 Developer Tools '+lvlBadge('explorer')+'</div><div class="card-sub">';
+        h+='<b>States</b> — inspect any entity\'s current state and attributes<br>';
+        h+='<b>Services</b> — test service calls (turn on, toggle, notify)<br>';
+        h+='<b>Logs</b> — find errors and warnings<br>';
+        h+='<b>Template</b> — test Jinja2 templates before using in automations';
+        h+='</div></div>';
+    }
+    return h;
+}
+
+/* ============================================================
+   PAGE: HELP
+   ============================================================ */
+function pgHelp(){
+    let h='<div class="page-title">❓ '+t('help')+'</div><div class="page-tag">Glossary, cheat sheet, and links.</div>';
+
+    h+='<div class="card"><div class="card-title">📖 Glossary</div><div class="card-sub">';
+    h+='<b>Entity</b> — any device or data point in HA (light.desk_lamp, sensor.temp)<br>';
+    h+='<b>State</b> — current value of an entity (on, off, 23.4°C)<br>';
+    h+='<b>Service</b> — action to perform (light.turn_on, notify.send)<br>';
+    h+='<b>Automation</b> — "when X happens, do Y"<br>';
+    h+='<b>Scene</b> — saved states of multiple devices<br>';
+    h+='<b>Script</b> — sequence of actions, manually triggered<br>';
+    h+='<b>Integration</b> — connection to a device or service<br>';
+    h+='<b>Add-on</b> — extra software running alongside HA<br>';
+    h+='<b>Lovelace</b> — HA\'s dashboard system<br>';
+    h+='<b>YAML</b> — config file format HA uses<br>';
+    h+='<b>Jinja2</b> — template language for dynamic values<br>';
+    h+='<b>mDNS</b> — auto-discovery on local network (.local addresses)';
+    h+='</div></div>';
+
+    h+='<div class="card"><div class="card-title">📝 YAML Cheat Sheet</div>';
+    h+=codeBlock('# Key-value\nname: My Light\n\n# List\nitems:\n  - First\n  - Second\n\n# Nested\nparent:\n  child: value\n  nested:\n    deep: true\n\n# Multi-line\ndescription: |\n  This is a long\n  multi-line string\n\n# Boolean\nenabled: true\ndisabled: false\n\n# Include\nautomation: !include automations.yaml\n\n# Secret\napi_key: !secret openweather_key');
+    h+='</div>';
+
+    h+='<div class="card"><div class="card-title">🔗 Links</div><div class="card-sub">';
+    h+='<a href="https://www.home-assistant.io" target="_blank">home-assistant.io</a> — Official site<br>';
+    h+='<a href="https://www.home-assistant.io/docs/" target="_blank">HA Documentation</a><br>';
+    h+='<a href="https://community.home-assistant.io" target="_blank">HA Community</a><br>';
+    h+='<a href="https://www.home-assistant.io/integrations/" target="_blank">Integrations list</a><br>';
+    h+='<a href="https://github.com/abourdim/esp32-c3-kids-lab" target="_blank">ESPHome Kids Lab</a><br>';
+    h+='<a href="https://github.com/abourdim/wled-kids-lab" target="_blank">WLED Kids Lab</a><br>';
+    h+='<a href="https://github.com/abourdim/linux-kids-lab" target="_blank">Linux Kids Lab</a>';
+    h+='</div></div>';
+    return h;
+}
+
+function pgPlaceholder(){
+    return'<div class="page-title">'+t(currentPage)+'</div><div class="card"><div class="card-sub">Coming soon...</div></div>';
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+loadState();
+renderSB();
+renderPage();
+renderMB();
+</script>
+</body>
+</html>
